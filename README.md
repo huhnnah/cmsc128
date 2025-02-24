@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Install dependencies
+Download theproject on local machine using git
+```bash
+git clone https://github.com/huhnnah/cmsc128.git
+```
+Install Node on local machine 
+https://nodejs.org/en
 
+Open project directory in terminal and install node packages and dependencies using the command:
+```bash
+npm install
+```
 ## Getting Started
 
 First, run the development server:

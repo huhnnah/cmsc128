@@ -12,6 +12,7 @@ export default function Home() {
     <div className="w-full max-w-sm">
       <LoginForm></LoginForm>
       <Button onClick={() => router.push('/dashboard')}>Punta ka na beh</Button>
+      <Button onClick={() => router.push('/dashboard/nestedpage')}>Punta ka na beh</Button>
     </div>
   </div>
   );
