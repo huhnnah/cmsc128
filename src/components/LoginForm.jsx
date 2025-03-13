@@ -20,7 +20,7 @@ export default function LoginForm({
   
   const handleLogin = (event) => {
     event.preventDefault();
-    router.push("/dashboard");
+    router.push("./dashboard");
   };
 
 {

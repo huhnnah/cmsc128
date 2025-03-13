@@ -1,19 +1,16 @@
-// Landing page
+//Login Login
 'use client'
 import Link from 'next/link';
 import LoginForm from "@/components/LoginForm";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
-import { Users, Shield } from 'lucide-react';
 
-
-export default function Home() {
+export default function Page() {
   const router = useRouter();
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
     <div className="w-full max-w-sm">
-      <Button variant="outline" size="lg" onClick={() => router.push("./admin")}> <Shield />Login as Admin</Button>
-      <Button variant="outline" size="lg"  onClick={() => router.push("./staff")}><Users />Login as Staff</Button>
+      <LoginForm></LoginForm>
     </div>
   </div>
   );
