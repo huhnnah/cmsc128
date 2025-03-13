@@ -16,12 +16,16 @@ export default function LoginForm({
 }) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className="flex justify-center mb-4">
+        <img
+          src="/logo.png" 
+          alt="Music World IMS Logo"
+          className="w-full max-w-md h-auto"
+        />
+      </div>
+      
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -48,10 +52,7 @@ export default function LoginForm({
                 <Input id="password" type="password" required />
               </div>
               <Button type="submit" className="w-full">
-                Login
-              </Button>
-              <Button variant="outline" className="w-full">
-                Login with Google
+                LOG IN TO SYSTEM
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">

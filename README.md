@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 ## Install dependencies
-Download theproject on local machine using git
+Download the project on local machine using git
 ```bash
 git clone https://github.com/huhnnah/cmsc128.git
 ```
