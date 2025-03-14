@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
     <div className="w-full max-w-sm">
-      <Button variant="outline" size="lg" onClick={() => router.push("./admin")}> <Shield />Login as Admin</Button>
-      <Button variant="outline" size="lg"  onClick={() => router.push("./staff")}><Users />Login as Staff</Button>
+      <Button variant="outline" size="lg" onClick={() => router.push("./admin/orders")}> <Shield />Login as Admin</Button>
+      <Button variant="outline" size="lg"  onClick={() => router.push("./staff/orders")}><Users />Login as Staff</Button>
     </div>
   </div>
   );
