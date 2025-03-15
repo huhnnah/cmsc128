@@ -113,7 +113,8 @@ export default function OrdersPage() {
                     <TableCell>{transaction.receiptNum}</TableCell>
                     <TableCell>{transaction.product}</TableCell>
                     <TableCell>{transaction.totalPrice}</TableCell>
-                    <TableCell className="flex space-x-2">
+                {/*Details toggle button with modal pop-up */}              
+                    <TableCell className="flex space-x-2">              
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
@@ -157,9 +158,41 @@ export default function OrdersPage() {
                           )}
                         </DialogContent>
                       </Dialog>
-                      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                      {/* For deleting transactions */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                        <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
                         <Trash2 size={16} />
                       </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-3xl p-7 text-gray-700">
+                        <DialogHeader>
+                            <DialogTitle>
+                              <span className="text-lg text-red-900">Delete Transaction</span>{" "}
+                              <span className="text-lg text-gray-400 font-normal italic">{transaction.transactionID}</span></DialogTitle>
+                            <DialogClose />
+                          </DialogHeader>
+                          <p className='text-sm text-gray-800 mt-2 pl-4'> Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction. </p>
+                          <div className="flex items-center gap-4 mt-4 pl-10">          
+                            <div className="flex-1">
+                              <label htmlFor={`password-${transaction.transactionID}`} className="text-base font-medium text-gray-700 block mb-2">
+                                Admin Password
+                              </label>
+                              <Input type="password" id={`password-${transaction.transactionID}`} required
+                                placeholder="Enter valid password"  className="w-full" 
+                              />
+                            </div>
+          
+                            <Button 
+                              className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
+                              onClick={() => handleDelete(transaction.transactionID, 
+                                document.getElementById(`password-${transaction.transactionID}`).value)}
+                            >
+                              DELETE TRANSACTION
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </TableCell>
                   </TableRow>
                   );
