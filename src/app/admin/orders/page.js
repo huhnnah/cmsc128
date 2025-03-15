@@ -11,24 +11,52 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
-import { Search, ListFilter, Trash2, Ellipsis } from "lucide-react";
+//import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
+import { Search, ListFilter, Download, Trash2, Ellipsis } from "lucide-react";
 import { useState } from "react";
 
-// sample data
-const delivery = [
-  { dateAdded: "11/12/22", deliveryNum: "188090", supplier: "Lazer", totalCost: "₱15,995" },
-  { dateAdded: "11/12/22", deliveryNum: "188091", supplier: "Lazer", totalCost: "₱4,500" },
-  { dateAdded: "11/12/22", deliveryNum: "188092", supplier: "Lazer", totalCost: "₱1,995" },
-  { dateAdded: "11/12/22", deliveryNum: "188093", supplier: "Mirbros", totalCost: "₱29,995"  },
-  { dateAdded: "11/12/22", deliveryNum: "188094", supplier: "Mirbros", totalCost: "₱125" },
-  { dateAdded: "11/12/22", deliveryNum: "188095", supplier: "Mirbros", totalCost: "₱2,595" },
-  { dateAdded: "11/12/22", deliveryNum: "188096", supplier: "Lazer", totalCost: "₱395" },
-  { dateAdded: "11/12/22", deliveryNum: "188097", supplier: "Lazer", totalCost: "₱295" },
-  { dateAdded: "11/12/22", deliveryNum: "188098", supplier: "Lazer", totalCost: "₱15,995" },
+//Not fetching from an API yet, so data is currently static
+
+// sample product data
+const products = [
+  { productCode: "188090", brand: "Cort", category: "Guitar", quantity: 2 },
+  { productCode: "188091", brand: "Lazer", category: "Drum", quantity: 1 },
+  { productCode: "188092", brand: "Lazer", category: "Drum", quantity: 3 },
+  { productCode: "188093", brand: "Alice", category: "Violin String", quantity: 0 },
+  { productCode: "188094", brand: "Bee", category: "Harmonica", quantity: 0 },
+  { productCode: "188095", brand: "Cort", category: "Guitar", quantity: 2 },
+  { productCode: "188096", brand: "Cort", category: "Guitar", quantity: 2 },
+  { productCode: "188097", brand: "Lazer", category: "Drum", quantity: 1 },
+  { productCode: "188098", brand: "Lazer", category: "Drum", quantity: 3 },
 ];
 
-export default function DeliveriesPage() {
+// sample deliveries data
+const delivery = [
+  { deliveryNum: "188090", supplier: "Lazer" },
+  { deliveryNum: "188091", supplier: "Lazer" },
+  { deliveryNum: "188092", supplier: "Lazer" },
+  { deliveryNum: "188093", supplier: "Mirbros" },
+  { deliveryNum: "188094", supplier: "Mirbros" },
+  { deliveryNum: "188095", supplier: "Mirbros" },
+  { deliveryNum: "188096", supplier: "Lazer" },
+  { deliveryNum: "188097", supplier: "Lazer" },
+  { deliveryNum: "188098", supplier: "Lazer" },
+];
+
+// sample transaction data
+const transactions = [
+  { dateAdded: "11/12/22", transactionID: "9090", transactionType: "Sales", productCode: "188090", receiptNum: "110090", product: "AD W/ W Case", totalPrice: "₱15,995" },
+  { dateAdded: "11/12/22", transactionID: "9091", transactionType: "Return", productCode: "188091", receiptNum: "111091",  product: "Maple Snare Drum", totalPrice: "₱4,500" },
+  { dateAdded: "11/12/22", transactionID: "9092", transactionType: "Sales", productCode: "188092", receiptNum: "112092",  product: "Cymbal Straight Stand", totalPrice: "₱1,995" },
+  { dateAdded: "11/12/22", transactionID: "9093", transactionType: "Sales", productCode: "188093", receiptNum: "113093",  product: "Alice Violin String", totalPrice: "₱29,995"  },
+  { dateAdded: "11/12/22", transactionID: "9094", transactionType: "Sales", productCode: "188094", receiptNum: "114094",  product: "Bee Harmonica", totalPrice: "₱125" },
+  { dateAdded: "11/12/22", transactionID: "9095", transactionType: "Sales", productCode: "188095", receiptNum: "115095",  product: "Cort Acoustic Guitar", totalPrice: "₱2,595" },
+  { dateAdded: "11/12/22", transactionID: "9096", transactionType: "Return", productCode: "188096", receiptNum: "116096",  product: "AD W/ W Case", totalPrice: "₱395" },
+  { dateAdded: "11/12/22", transactionID: "9097", transactionType: "Return", productCode: "188097", receiptNum: "117097",  product: "Maple Snare Drum", totalPrice: "₱295" },
+  { dateAdded: "11/12/22", transactionID: "9098", transactionType: "Return", productCode: "188098", receiptNum: "118098",  product: "Cymbal Straight Stand", totalPrice: "₱15,995" },
+];
+
+export default function OrdersPage() {
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -52,28 +80,39 @@ export default function DeliveriesPage() {
               </Button>
             </div>
             <div className="flex space-x-2">
-              <Button className="bg-blue-400 text-white">Add Delivery</Button>
+            <Button className="bg-blue-400 text-white">
+                <Download className="w-4 h-4"/>
+              </Button>
             </div>
           </div>
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
-          <h1 className="text-gray-600 font-bold">Deliveries</h1>
+          <h1 className="text-gray-600 font-bold">Customer Orders/Transactions</h1>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Date</TableHead>
-                  <TableHead>Delivery Number</TableHead>
-                  <TableHead>Supplier</TableHead>
-                  <TableHead>Total Cost</TableHead>
+                  <TableHead>Transaction ID</TableHead>
+                  <TableHead>Transaction Type</TableHead>
+                  <TableHead>Product Code</TableHead>
+                  <TableHead>Receipt Number</TableHead>
+                  <TableHead>Product</TableHead>
+                  <TableHead>Total</TableHead>
                   <TableHead>Details</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {delivery.map((d) => (
-                  <TableRow key={d.deliveryNum}>
-                    <TableCell>{d.dateAdded}</TableCell>
-                    <TableCell>{d.deliveryNum}</TableCell>
-                    <TableCell>{d.supplier}</TableCell>
-                    <TableCell>{d.totalCost}</TableCell>
+              {transactions.map((transaction) => {
+                  const product = products.find((p) => p.productCode === transaction.productCode) || {};
+                  const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
+                  return (
+                  <TableRow key={transaction.transactionID}>
+                    <TableCell>{transaction.dateAdded}</TableCell>
+                    <TableCell>{transaction.transactionID}</TableCell>
+                    <TableCell>{transaction.transactionType}</TableCell>
+                    <TableCell>{transaction.productCode}</TableCell>
+                    <TableCell>{transaction.receiptNum}</TableCell>
+                    <TableCell>{transaction.product}</TableCell>
+                    <TableCell>{transaction.totalPrice}</TableCell>
                     <TableCell className="flex space-x-2">
                       <Dialog>
                         <DialogTrigger asChild>
@@ -82,43 +121,40 @@ export default function DeliveriesPage() {
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-3xl p-6">
-                          <DialogHeader>
-                            <DialogTitle>Delivery Details</DialogTitle>
+                        <DialogHeader>
+                            <DialogTitle>Transaction Details</DialogTitle>
                             <DialogClose />
                           </DialogHeader>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="text-sm font-medium">Date of Delivery</label>
-                              <Input type="date" defaultValue={d.dateAdded} />
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium">Delivery Number</label>
-                              <Input value={d.deliveryNum} disabled />
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4 mt-4">
-                            <div>
-                              <label className="text-sm font-medium">Total Cost</label>
-                              <Input type="text" defaultValue={d.totalCost} />
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium">Supplier</label>
-                              <Select>
-                                <SelectTrigger>{d.supplier}</SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="Lazer">Lazer</SelectItem>
-                                  <SelectItem value="Yamaha">Yamaha</SelectItem>
-                                  <SelectItem value="Cort">Cort</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
-                          <div className="flex justify-end mt-4">
-                            <DialogClose asChild>
-                              <Button variant="outline">Cancel</Button>
-                            </DialogClose>
-                            <Button className="bg-blue-500 text-white">Save</Button>
-                          </div>
+                          {products && deliveries ? (
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Date</TableHead>
+                                <TableHead>Product Code</TableHead>
+                                <TableHead>Supplier</TableHead>
+                                <TableHead>Brand</TableHead>
+                                <TableHead>Category</TableHead>
+                                <TableHead>Product</TableHead>
+                                <TableHead>Quantity</TableHead>
+                                <TableHead>Total</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell>{transaction.dateAdded}</TableCell>
+                                <TableCell>{transaction.productCode}</TableCell>
+                                <TableCell>{deliveries.supplier}</TableCell>
+                                <TableCell>{product.brand}</TableCell>
+                                <TableCell>{product.category}</TableCell>
+                                <TableCell>{transaction.product}</TableCell>
+                                <TableCell>{product.quantity}</TableCell>
+                                <TableCell>{transaction.totalPrice}</TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                          ) : (
+                            <p className="text-gray-500">Product details not found.</p>
+                          )}
                         </DialogContent>
                       </Dialog>
                       <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
@@ -126,7 +162,8 @@ export default function DeliveriesPage() {
                       </Button>
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           </div>

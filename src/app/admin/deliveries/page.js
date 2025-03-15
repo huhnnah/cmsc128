@@ -19,13 +19,13 @@ import { useState } from "react";
 const delivery = [
   { dateAdded: "11/12/22", deliveryNum: "188090", supplier: "Lazer", totalCost: "₱15,995" },
   { dateAdded: "11/12/22", deliveryNum: "188091", supplier: "Lazer", totalCost: "₱4,500" },
-  { dateAdded: "11/12/22", deliveryNum: "188092", supplier: "Lazer", totalCost: "₱2,395" },
-  { dateAdded: "11/12/22", deliveryNum: "188093", supplier: "Lazer", totalCost: "₱395"  },
+  { dateAdded: "11/12/22", deliveryNum: "188092", supplier: "Lazer", totalCost: "₱1,995" },
+  { dateAdded: "11/12/22", deliveryNum: "188093", supplier: "Mirbros", totalCost: "₱29,995"  },
+  { dateAdded: "11/12/22", deliveryNum: "188094", supplier: "Mirbros", totalCost: "₱125" },
+  { dateAdded: "11/12/22", deliveryNum: "188095", supplier: "Mirbros", totalCost: "₱2,595" },
+  { dateAdded: "11/12/22", deliveryNum: "188096", supplier: "Lazer", totalCost: "₱395" },
   { dateAdded: "11/12/22", deliveryNum: "188097", supplier: "Lazer", totalCost: "₱295" },
   { dateAdded: "11/12/22", deliveryNum: "188098", supplier: "Lazer", totalCost: "₱15,995" },
-  { dateAdded: "11/12/22", deliveryNum: "188193", supplier: "Lazer", totalCost: "₱15,995" },
-  { dateAdded: "11/12/22", deliveryNum: "188096", supplier: "Lazer", totalCost: "₱4,500" },
-  { dateAdded: "11/12/22", deliveryNum: "188197", supplier: "Lazer", totalCost: "₱2,395" },
 ];
 
 export default function DeliveriesPage() {
