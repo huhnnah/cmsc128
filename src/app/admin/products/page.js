@@ -1,13 +1,13 @@
 import { AppSidebar } from "@/components/admin-sidebar"
-import {
-  SidebarProvider,
-} from "@/components/ui/sidebar"
-import { 
-  Table, TableBody, TableHead, TableHeader, TableRow, TableCell 
-} from "@/components/ui/table";
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ListFilter, Download, FilePen, Trash2 } from "lucide-react";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 // Sample product data
 const products = [
@@ -46,10 +46,128 @@ export default function ProductTable() {
               </Button>
             </div>
             <div className="flex space-x-2">
-              <Button className="bg-blue-400 text-white">Add Product</Button>
-              <Button className="bg-blue-400 text-white">Update Price</Button>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button className="bg-blue-400 text-white">Add Product</Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[400px] h-full overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle className="text-blue-400 text-xl font-bold mb-4">Add New Product</SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col space-y-3">
+                    <Label className>Product Code</Label>
+                    <Input placeholder="Enter product code" />
+
+                    <Label>Date Added</Label>
+                    <Input type="date" />
+
+                    <Label>Supplier</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Supplier" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Lazer">Lazer</SelectItem>
+                        <SelectItem value="Cort">Cort</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Brand</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Brand" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Cort">Cort</SelectItem>
+                        <SelectItem value="Lazer">Lazer</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Category</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Guitar">Guitar</SelectItem>
+                        <SelectItem value="Drum">Drum</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Product Name</Label>
+                    <Input placeholder="Enter product name" />
+
+                    <Label>Quantity</Label>
+                    <Input type="number" placeholder="Enter quantity" />
+
+                    <Label>Price</Label>
+                    <Input type="text" placeholder="Enter price" />
+
+                    <Label>Selling Price</Label>
+                    <Input type="text" placeholder="Enter selling price" />
+
+                    <Label>Product Status</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Out of Stock">Out of Stock</SelectItem>
+                        <SelectItem value="Low Stock">Low Stock</SelectItem>
+                        <SelectItem value="Discontinued">Discontinued</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Button className="bg-blue-400 text-white w-full mt-4">Add Product</Button>
+                  </div>
+                </SheetContent>
+              </Sheet>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-blue-400 text-white">Update Price</Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="text-blue-400 text-xl font-bold mb-4">Product Price Update</DialogTitle>
+                  </DialogHeader>
+
+                  {/* Input Fields */}
+                  <div className="flex flex-col space-y-3">
+                    <Label>Product Name</Label>
+                    <Input placeholder="Enter product name" />
+
+                    <Label>Supplier</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Supplier" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Lazer">Lazer</SelectItem>
+                        <SelectItem value="Cort">Cort</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Product Code</Label>
+                    <Input disabled placeholder="Auto-filled" className="bg-gray-300" />
+
+                    <Label>Price</Label>
+                    <Input disabled placeholder="Auto-filled" className="bg-gray-300" />
+
+                    <Label>Updated Price</Label>
+                    <Input type="text" placeholder="Enter new price" />
+                  </div>
+
+                  <DialogFooter>
+                    <Button className="bg-blue-500 text-white w-full">Update Product Price</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+
+              {/* Download Button */}
               <Button className="bg-blue-400 text-white">
-                <Download className="w-4 h-4"/>
+                <Download className="w-4 h-4" />
               </Button>
             </div>
           </div>
