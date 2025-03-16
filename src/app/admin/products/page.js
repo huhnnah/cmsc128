@@ -15,11 +15,11 @@ const products = [
   { productCode: "188091", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Maple Snare Drum", quantity: 1, price: "₱4,500", sellingprice:"1", status: "Active" },
   { productCode: "188092", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Cymbal Straight Stand", quantity: 3, price: "₱2,395", sellingprice:"1", status: "Active" },
   { productCode: "188093", dateAdded: "11/12/22", supplier: "Lazer", brand: "Alice", category: "Violin String", product: "Alice Violin String", quantity: 0, price: "₱395", sellingprice:"1", status: "Discontinued" },
-  { productCode: "188097", dateAdded: "11/12/22", supplier: "Lazer", brand: "Bee", category: "Harmonica", product: "Bee Harmonica", quantity: 0, price: "₱295", sellingprice:"1", status: "Out of Stock" },
-  { productCode: "188098", dateAdded: "11/12/22", supplier: "Lazer", brand: "Cort", category: "Guitar", product: "Cort Acoustic Guitar", quantity: 2, price: "₱15,995", sellingprice:"1", status: "Low Stock" },
-  { productCode: "188193", dateAdded: "11/12/22", supplier: "Lazer", brand: "Cort", category: "Guitar", product: "AD W/ W Case", quantity: 2, price: "₱15,995", sellingprice:"1", status: "Active" },
-  { productCode: "188096", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Maple Snare Drum", quantity: 1, price: "₱4,500", sellingprice:"1", status: "Active" },
-  { productCode: "188197", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Cymbal Straight Stand", quantity: 3, price: "₱2,395", sellingprice:"1", status: "Active" },
+  { productCode: "188094", dateAdded: "11/12/22", supplier: "Lazer", brand: "Bee", category: "Harmonica", product: "Bee Harmonica", quantity: 0, price: "₱295", sellingprice:"1", status: "Out of Stock" },
+  { productCode: "188095", dateAdded: "11/12/22", supplier: "Lazer", brand: "Cort", category: "Guitar", product: "Cort Acoustic Guitar", quantity: 2, price: "₱15,995", sellingprice:"1", status: "Low Stock" },
+  { productCode: "188096", dateAdded: "11/12/22", supplier: "Lazer", brand: "Cort", category: "Guitar", product: "AD W/ W Case", quantity: 2, price: "₱15,995", sellingprice:"1", status: "Active" },
+  { productCode: "188097", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Maple Snare Drum", quantity: 1, price: "₱4,500", sellingprice:"1", status: "Active" },
+  { productCode: "188098", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Cymbal Straight Stand", quantity: 3, price: "₱2,395", sellingprice:"1", status: "Active" },
 ];
 
 export default function ProductTable() {
