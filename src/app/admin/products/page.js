@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
@@ -23,6 +26,14 @@ const products = [
 ];
 
 export default function ProductTable() {
+  const [isSheetOpen, setSheetOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const openEditSheet = (product) => {
+    setSelectedProduct(product);
+    setSheetOpen(true);
+  };
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -118,7 +129,6 @@ export default function ProductTable() {
                         <SelectItem value="Discontinued">Discontinued</SelectItem>
                       </SelectContent>
                     </Select>
-
                     <Button className="bg-blue-400 text-white w-full mt-4">Add Product</Button>
                   </div>
                 </SheetContent>
@@ -133,7 +143,6 @@ export default function ProductTable() {
                     <DialogTitle className="text-blue-400 text-xl font-bold mb-4">Product Price Update</DialogTitle>
                   </DialogHeader>
 
-                  {/* Input Fields */}
                   <div className="flex flex-col space-y-3">
                     <Label>Product Name</Label>
                     <Input placeholder="Enter product name" />
@@ -165,7 +174,6 @@ export default function ProductTable() {
                 </DialogContent>
               </Dialog>
 
-              {/* Download Button */}
               <Button className="bg-blue-400 text-white">
                 <Download className="w-4 h-4" />
               </Button>
@@ -203,7 +211,7 @@ export default function ProductTable() {
                   <TableHead>{product.sellingprice}</TableHead>
                   <TableHead className={`font-semibold ${getStatusTextColor(product.status)}`}>{product.status}</TableHead>
                   <TableHead className="flex space-x-2">
-                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
+                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600" onClick={() => openEditSheet(product)}>
                       <FilePen size={16} />
                     </Button>
                     <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
@@ -214,6 +222,82 @@ export default function ProductTable() {
               ))}
             </TableBody>
           </Table>
+          <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+        <SheetContent side="right" className="w-[400px] h-full overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle className="text-blue-400 text-xl font-bold">Edit Product Details</SheetTitle>
+          </SheetHeader>
+          {selectedProduct && (
+            <div className="flex flex-col space-y-3">
+              <label>Product Code</label>
+              <Input value={selectedProduct.productCode} disabled className="bg-gray-200" />
+
+              <label>Date Added</label>
+              <Input value={selectedProduct.dateAdded} disabled className="bg-gray-200" />
+
+              <label>Supplier</label>
+              <Select value={selectedProduct.supplier}>
+                <SelectTrigger>
+                  <SelectValue placeholder={selectedProduct.supplier}/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Lazer">Lazer</SelectItem>
+                  <SelectItem value="Cort">Cort</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <label>Brand</label>
+              <Select value={selectedProduct.brand}>
+                <SelectTrigger>
+                  <SelectValue placeholder={selectedProduct.brand}/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Cort">Cort</SelectItem>
+                  <SelectItem value="Lazer">Lazer</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <label>Category</label>
+              <Select value={selectedProduct.category}>
+                <SelectTrigger>
+                  <SelectValue placeholder={selectedProduct.category} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Guitar">Guitar</SelectItem>
+                  <SelectItem value="Drum">Drum</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <label>Product Name</label>
+              <Input placeholder={selectedProduct.product} />
+
+              <label>Quantity</label>
+              <Input type="number" defaultValue={selectedProduct.quantity} />
+
+              <label>Price</label>
+              <Input type="text" defaultValue={selectedProduct.price} />
+
+              <label>Selling Price</label>
+              <Input type="text" defaultValue={selectedProduct.sellingprice} />
+
+              <label>Product Status</label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder={selectedProduct.status} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Active">Active</SelectItem>
+                  <SelectItem value="Out of Stock">Out of Stock</SelectItem>
+                  <SelectItem value="Low Stock">Low Stock</SelectItem>
+                  <SelectItem value="Discontinued">Discontinued</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Button className="bg-blue-400 text-white w-full mt-4">Save Edit</Button>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
         </div>
       </div>
     </div>
