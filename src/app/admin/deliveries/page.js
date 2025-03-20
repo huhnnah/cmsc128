@@ -15,7 +15,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/u
 import { Search, ListFilter, Trash2, Ellipsis } from "lucide-react";
 import { useState } from "react";
 
-// sample data
+// sample data for deliveries
 const delivery = [
   { dateAdded: "11/12/22", deliveryNum: "188090", supplier: "Lazer", totalCost: "₱15,995" },
   { dateAdded: "11/12/22", deliveryNum: "188091", supplier: "Lazer", totalCost: "₱4,500" },

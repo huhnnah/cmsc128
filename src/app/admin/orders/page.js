@@ -158,10 +158,11 @@ export default function OrdersPage() {
                           )}
                         </DialogContent>
                       </Dialog>
+                      
                       {/* For deleting transactions */}
                       <Dialog>
                         <DialogTrigger asChild>
-                        <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
                         <Trash2 size={16} />
                       </Button>
                         </DialogTrigger>
