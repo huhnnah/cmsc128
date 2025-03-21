@@ -2,11 +2,11 @@
 
 import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarProvider} from "@/components/ui/sidebar"
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell, TableFooter } from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
-import { Search, ListFilter, Download, Trash2, Ellipsis } from "lucide-react";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogDescription } from "@/components/ui/dialog";
+import { Search, ListFilter, Download, Trash2, Ellipsis, RotateCcw } from "lucide-react";
 
 // sample product data
 const products = [
@@ -36,23 +36,18 @@ const delivery = [
 
 // sample transaction data
 const transactions = [
-  { dateAdded: "11/12/22", transactionID: "9090", productCode: "188090", receiptNum: "110090", product: "AD W/ W Case", totalPrice: "₱15,995", discountedPrice: "₱14,995" },
-  { dateAdded: "11/12/22", transactionID: "9091", productCode: "188091", receiptNum: "111091",  product: "Maple Snare Drum", totalPrice: "₱4,500", discountedPrice: "₱3,500" },
-  { dateAdded: "11/12/22", transactionID: "9092", productCode: "188092", receiptNum: "112092",  product: "Cymbal Straight Stand", totalPrice: "₱1,995", discountedPrice: "₱1,495" },
-  { dateAdded: "11/12/22", transactionID: "9093", productCode: "188093", receiptNum: "113093",  product: "Alice Violin String", totalPrice: "₱29,995", discountedPrice: "₱28,995" },
-  { dateAdded: "11/12/22", transactionID: "9094", productCode: "188094", receiptNum: "114094",  product: "Bee Harmonica", totalPrice: "₱125", discountedPrice: "₱95" },
-  { dateAdded: "11/12/22", transactionID: "9095", productCode: "188095", receiptNum: "115095",  product: "Cort Acoustic Guitar", totalPrice: "₱2,595", discountedPrice: "₱1,995" },
-  { dateAdded: "11/12/22", transactionID: "9096", productCode: "188096", receiptNum: "116096",  product: "AD W/ W Case", totalPrice: "₱395", discountedPrice: "₱295" },
-  { dateAdded: "11/12/22", transactionID: "9097", productCode: "188097", receiptNum: "117097",  product: "Maple Snare Drum", totalPrice: "₱295", discountedPrice: "₱195" },
-  { dateAdded: "11/12/22", transactionID: "9098", productCode: "188098", receiptNum: "118098",  product: "Cymbal Straight Stand", totalPrice: "₱15,995", discountedPrice: "₱14,995" }, 
+  { dateAdded: "11/12/22", transactionID: "9090", productCode: "188090", receiptNum: "110090", product: "AD W/ W Case", totalPrice: "₱15,995" },
+  { dateAdded: "11/12/22", transactionID: "9091", productCode: "188091", receiptNum: "111091",  product: "Maple Snare Drum", totalPrice: "₱4,500"},
+  { dateAdded: "11/12/22", transactionID: "9092", productCode: "188092", receiptNum: "112092",  product: "Cymbal Straight Stand", totalPrice: "₱1,995"},
+  { dateAdded: "11/12/22", transactionID: "9093", productCode: "188093", receiptNum: "113093",  product: "Alice Violin String", totalPrice: "₱29,995"},
+  { dateAdded: "11/12/22", transactionID: "9094", productCode: "188094", receiptNum: "114094",  product: "Bee Harmonica", totalPrice: "₱125"},
+  { dateAdded: "11/12/22", transactionID: "9095", productCode: "188095", receiptNum: "115095",  product: "Cort Acoustic Guitar", totalPrice: "₱2,595"},
+  { dateAdded: "11/12/22", transactionID: "9096", productCode: "188096", receiptNum: "116096",  product: "AD W/ W Case", totalPrice: "₱395"},
+  { dateAdded: "11/12/22", transactionID: "9097", productCode: "188097", receiptNum: "117097",  product: "Maple Snare Drum", totalPrice: "₱295"},
+  { dateAdded: "11/12/22", transactionID: "9098", productCode: "188098", receiptNum: "118098",  product: "Cymbal Straight Stand", totalPrice: "₱15,995"}, 
 ];
 
-export default function DiscountsPage() {
-  const totalDiscountedSales = transactions.reduce((total, transaction) => {
-    const amount = parseFloat(transaction.discountedPrice.replace("₱", "").replace(",", "")) || 0;
-    return total + amount;
-  }, 0);
-
+export default function DeletedPage() {
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -82,7 +77,7 @@ export default function DiscountsPage() {
             </div>
           </div>
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
-          <h1 className="text-gray-600 font-bold">Discounts</h1>
+          <h1 className="text-gray-600 font-bold">Deleted Transaction</h1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -92,8 +87,8 @@ export default function DiscountsPage() {
                   <TableHead>Receipt Number</TableHead>
                   <TableHead>Product</TableHead>
                   <TableHead>Price</TableHead>
-                  <TableHead>Discounted Price</TableHead>
                   <TableHead>Details</TableHead>
+                  <TableHead>Retrive/Delete</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -108,9 +103,8 @@ export default function DiscountsPage() {
                     <TableCell>{transaction.receiptNum}</TableCell>
                     <TableCell>{transaction.product}</TableCell>
                     <TableCell>{transaction.totalPrice}</TableCell>
-                    <TableCell>{transaction.discountedPrice}</TableCell>
                 {/*Details toggle button with modal pop-up */}              
-                    <TableCell className="flex space-x-2">              
+                    <TableCell>              
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
@@ -133,7 +127,7 @@ export default function DiscountsPage() {
                                 <TableHead>Category</TableHead>
                                 <TableHead>Product</TableHead>
                                 <TableHead>Quantity</TableHead>
-                                <TableHead>Price</TableHead>
+                                <TableHead>Total</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -154,7 +148,35 @@ export default function DiscountsPage() {
                           )}
                         </DialogContent>
                       </Dialog>
-                      
+                    </TableCell>
+                    {/* For retrieving transactions */}
+                    <TableCell className="flex items-center">           
+                      <Dialog>
+                        <DialogTrigger asChild> 
+                          <span className="cursor-pointer text-gray-500 hover:text-blue-600">
+                            <RotateCcw size={16} />
+                          </span>
+                        </DialogTrigger> 
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Are you sure you want to retrieve this transaction?</DialogTitle>
+                            <DialogDescription>
+                              This action will restore the transaction and update the sales report.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="flex justify-end gap-2 mt-4">
+                            <Button 
+                              className="bg-blue-400 text-white hover:bg-blue-700"
+                              onClick={() => handleRetrieve(transaction.transactionID)}
+                            >
+                              Confirm
+                            </Button>
+                            <DialogClose asChild>
+                              <Button variant="outline">Cancel</Button>
+                            </DialogClose>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                       {/* For deleting transactions */}
                       <Dialog>
                         <DialogTrigger asChild>
@@ -195,12 +217,6 @@ export default function DiscountsPage() {
                   );
                 })}
               </TableBody>
-              <TableFooter>
-                <TableRow className="bg-white">  
-                  <TableCell colSpan={6} className="text-right font-bold">Total Discounted Sales:</TableCell>
-                  <TableCell className="font-bold">₱{totalDiscountedSales.toLocaleString()}</TableCell>
-                </TableRow>
-              </TableFooter>
             </Table>
           </div>
         </div>
