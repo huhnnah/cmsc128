@@ -1,17 +1,23 @@
 "use client";
 
 import { AppSidebar } from "@/components/admin-sidebar"
-import {
-  SidebarProvider,
-} from "@/components/ui/sidebar"
-import { 
-  Table, TableBody, TableHead, TableHeader, TableRow, TableCell 
-} from "@/components/ui/table";
+import { SidebarProvider, } from "@/components/ui/sidebar"
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label"
+import {   Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger, } from "@/components/ui/sheet"
+  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Search, ListFilter, Download, Trash2, Ellipsis, Plus } from "lucide-react";
+import { Search, Download, Trash2, Ellipsis, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 
 
@@ -54,20 +60,16 @@ const deliveries = [
   { dateAdded: "11/12/22", deliveryNum: "D-188098", supplier: "Lazer", productCode: "188098", totalCost: "₱15,995" },
 ];
 
-// Sample supplier returns data
-const supplierReturns = [
-  { dateAdded: "11/12/22", returnID: "SR-001", productCode: "188090", supplier: "Lazer", product: "AD W/ W Case", quantity: 1, totalCost: "₱7,995" },
-  { dateAdded: "11/12/22", returnID: "SR-002", productCode: "188091", supplier: "Lazer", product: "Maple Snare Drum", quantity: 1, totalCost: "₱4,500" },
-  { dateAdded: "11/12/22", returnID: "SR-003", productCode: "188095", supplier: "Mirbros", product: "Cort Acoustic Guitar", quantity: 1, totalCost: "₱2,595" },
-];
+
 
 export default function ReturnsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [customerReturns, setCustomerReturns] = useState([]);
   const [filteredSupplierReturns, setFilteredSupplierReturns] = useState([]);
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [selectedFilter] = useState("All");
   const [activeTab, setActiveTab] = useState("customer");
-  
+  const SHEET_LABELS = ["Add Customer Return", "Add Supplier Return"];
+
   // Process and merge data from transactions and products tables for customer returns
   useEffect(() => {
     // Filter transactions to only include returns
@@ -107,7 +109,7 @@ export default function ReturnsPage() {
     setCustomerReturns(processedReturns);
     
     // Process supplier returns data
-    const processedSupplierReturns = supplierReturns.map(returnItem => {
+    const processedSupplierReturns = deliveries.map(returnItem => {
       // Find the matching product for additional details
       const productMatch = products.find(
         product => product.productCode === returnItem.productCode
@@ -137,17 +139,30 @@ export default function ReturnsPage() {
     return matchesSearch;
   });
   
-  // Filter supplier returns based on search term
-  useEffect(() => {
-    const filtered = supplierReturns.filter(item => 
+useEffect(() => {
+  const filtered = deliveries
+    .map((item, index) => {
+      const productMatch = products.find(p => p.productCode === item.productCode);
+      return {
+        ...item,
+        returnID: `SR-${index.toString().padStart(3, "0")}`, // fake ID for display
+        product: productMatch ? productMatch.product : "Unknown",
+        brand: productMatch ? productMatch.brand : "Unknown",
+        category: productMatch ? productMatch.category : "Unknown",
+        quantity: productMatch ? productMatch.quantity : 0
+      };
+    })
+    .filter(item =>
       item.product.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.productCode.includes(searchTerm) ||
       item.supplier.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.returnID.includes(searchTerm)
     );
-    
-    setFilteredSupplierReturns(filtered);
-  }, [searchTerm]);
+
+  setFilteredSupplierReturns(filtered);
+}, [searchTerm]);
+
+
 
   return (
     <SidebarProvider>
@@ -156,32 +171,186 @@ export default function ReturnsPage() {
         <div className="flex-1 p-4 flex flex-col w-full">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h1 className="text-xl text-gray-600">Processing of Returns</h1>
+              <h1 className="text-xl text-gray-600 font-medium">Processing of Returns</h1>
             </div>
+
+            {/* For Add Product Return Sheet from Customer Returns */}
             <div className="flex space-x-2">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="flex items-center gap-2 bg-blue-400 text-white">
-                    <Plus size={16} />
-                    Add Product Return
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Add Product Return</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-4">
-                    {/* Completely blank dialog content */}
+            {activeTab === "customer" && (
+                <Sheet >
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="bg-blue-400 text-white">Add Customer Return</Button>
+                  </SheetTrigger>
+                  <SheetContent side="right" className="w-[400px] h-full overflow-y-auto">
+                    <SheetHeader>
+                      <SheetTitle className="text-xl mb-4">Add Product Return</SheetTitle>
+                    </SheetHeader>
+                    <div className="flex flex-col space-y-3"> 
+                    <Label>Product Name</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Product A">Product A</SelectItem>
+                        <SelectItem value="Product B">Product B</SelectItem>
+                      </SelectContent>
+                    </Select>               
+                    <Label>Supplier</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Lazer">Lazer</SelectItem>
+                        <SelectItem value="Cort">Cort</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Brand</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Cort">Cort</SelectItem>
+                        <SelectItem value="Lazer">Lazer</SelectItem>
+                        <SelectItem value="Lazer">Bee</SelectItem>
+                        <SelectItem value="Lazer">Alice</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Quantity</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Discount</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">none</SelectItem>
+                        <SelectItem value="0">0</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Price/Amount</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Price1">₱15,995</SelectItem>
+                        <SelectItem value="Price2">₱10</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    </div>
+                    <SheetFooter>
+                      <SheetClose asChild>
+                        <Button type="submit" className="bg-blue-400 text-white w-full mt-4">Add Return</Button>
+                      </SheetClose>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
+            )} 
+
+            {/* For Add Product Return Sheet To Supplier Returns */}            
+            {activeTab === "supplier" && (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="bg-blue-400 text-white">Add Return to Supplier</Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[400px] h-full overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle className="text-xl mb-4">Add Product Return</SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col space-y-3">
+                  <Label>Delivery Number</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Delivery 1">188090</SelectItem>
+                        <SelectItem value="Delivery 2">188091</SelectItem>
+                      </SelectContent>
+                    </Select>               
+                    <Label>Supplier</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Lazer">Lazer</SelectItem>
+                        <SelectItem value="Mirbros">Mirbros</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    
+                    <Label>Product</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                      <SelectItem value="Product A">Product A</SelectItem>
+                      <SelectItem value="Product B">Product B</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+
+                    <Label>Brand</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Cort">Cort</SelectItem>
+                        <SelectItem value="Lazer">Lazer</SelectItem>
+                        <SelectItem value="Lazer">Bee</SelectItem>
+                        <SelectItem value="Lazer">Alice</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Quantity</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Label>Total</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Price1">	₱7,995</SelectItem>
+                        <SelectItem value="Price2">₱4,500</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button className="bg-white text-blue-400">Cancel</Button>
-                    </DialogClose>
-                    <Button className="bg-blue-400">Add Return</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
+                  <SheetFooter>
+                    <SheetClose asChild>
+                      <Button type="submit" className="bg-blue-400 text-white w-full mt-4">Add Return</Button>
+                    </SheetClose>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+            )}                             
+            </div>    
           </div>
 
           <div className="flex items-center justify-between mb-4">
@@ -197,14 +366,14 @@ export default function ReturnsPage() {
           </div>
           
           <Tabs defaultValue="customer" className="w-full mb-4" onValueChange={setActiveTab}>
-            <TabsList>
+            <TabsList className="w-full flex justify-start bg-white border rounded-md px-4">
               <TabsTrigger value="customer" className="data-[state=active]:text-indigo-600 hover:text-black">RETURN FROM CUSTOMER</TabsTrigger>
               <TabsTrigger value="supplier" className="data-[state=active]:text-indigo-600 hover:text-black">RETURN TO SUPPLIER</TabsTrigger>
             </TabsList>
             
             {/* Customer Returns Tab Content */}
             <TabsContent value="customer" className="mt-4">
-              <div className="bg-white rounded-lg shadow-sm border flex-col overflow-auto w-full">
+              <div className=" flex flex-col overflow-auto w-full">
                 <Table className="w-full">
                   <TableHeader>
                     <TableRow>
@@ -220,7 +389,7 @@ export default function ReturnsPage() {
                     {filteredCustomerReturns.length > 0 ? (
                       filteredCustomerReturns.map((item) => (
                         <TableRow key={item.transactionID}>
-                          <TableCell className="font-medium">{item.dateAdded}</TableCell>
+                          <TableCell>{item.dateAdded}</TableCell>
                           <TableCell>{item.transactionID}</TableCell>
                           <TableCell>{item.product}</TableCell>
                           <TableCell className="text-center">{item.quantity}</TableCell>
@@ -230,7 +399,7 @@ export default function ReturnsPage() {
                           <div className="flex justify-center space-x-2"> 
                             <Dialog>
                               <DialogTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <Button variant="ghost" size="sm" className="h-8 w-8">
                                   <Ellipsis size={16} />
                                 </Button>
                               </DialogTrigger>
@@ -270,8 +439,7 @@ export default function ReturnsPage() {
                                 </div>
                               </DialogContent>
                             </Dialog>
-
-                            <Button variant="ghost" size="icon" className="text-gray-500 hover:text-red-600">
+                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
                               <Trash2 size={16}/>
                             </Button>
                           </div>
@@ -296,77 +464,33 @@ export default function ReturnsPage() {
                 <Table className="w-full">
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-20">Date</TableHead>
-                      <TableHead className="w-24">Return ID</TableHead>
-                      <TableHead className="w-24">Product Code</TableHead>
-                      <TableHead className="w-0">Supplier</TableHead>
-                      <TableHead className="w-0">Product</TableHead>
-                      <TableHead className="w-16 text-center">Quantity</TableHead>
-                      <TableHead className="w-0 text-center">Total</TableHead>
-                      <TableHead className="w-1 text-center">Details</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredSupplierReturns.length > 0 ? (
-                      filteredSupplierReturns.map((item) => (
-                        <TableRow key={item.returnID}>
-                          <TableCell className="font-medium">{item.dateAdded}</TableCell>
-                          <TableCell>{item.returnID}</TableCell>
-                          <TableCell>{item.productCode}</TableCell>
-                          <TableCell>{item.supplier}</TableCell>
-                          <TableCell>{item.product}</TableCell>
-                          <TableCell className="text-center">{item.quantity}</TableCell>
-                          <TableCell className="text-center">{item.totalCost}</TableCell>
-
-                          <TableCell className="text-center">
-                          <div className="flex justify-center space-x-2">              
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
-                                  <Ellipsis size={16} />
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-3xl p-6">
-                                <DialogHeader>
-                                  <DialogTitle>Return Details</DialogTitle>
-                                </DialogHeader>
-                                <div className="py-4">
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead >Date</TableHead>
-                                        <TableHead>Return ID</TableHead>
-                                        <TableHead>Product Code</TableHead>
-                                        <TableHead>Supplier</TableHead>
-                                        <TableHead>Brand</TableHead>
-                                        <TableHead>Category</TableHead>
-                                        <TableHead>Product</TableHead>
-                                        <TableHead>Quantity</TableHead>
-                                        <TableHead>Total</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell className="text-center">{item.dateAdded}</TableCell>
-                                        <TableCell className="text-center">{item.returnID}</TableCell>
-                                        <TableCell className="text-center">{item.productCode}</TableCell>
-                                        <TableCell className="text-center">{item.supplier}</TableCell>
-                                        <TableCell className="text-center">{item.brand}</TableCell>
-                                        <TableCell className="text-center">{item.category}</TableCell>
-                                        <TableCell className="text-center">{item.product}</TableCell>
-                                        <TableCell className="text-center">{item.quantity}</TableCell>
-                                        <TableCell className="text-center">{item.totalCost}</TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                            <Button variant="ghost" size="icon" className="text-gray-500 hover:text-red-600 h-8 w-8">
-                              <Trash2 size={16} />
-                            </Button>
-                          </div>
-                          </TableCell>
+                    <TableHead className="w-24">Date</TableHead>
+                    <TableHead className="w-32">Product Code</TableHead>
+                    <TableHead className="w-32">Supplier</TableHead>
+                    <TableHead className="w-40">Product</TableHead>
+                    <TableHead className="w-20 text-center">Quantity</TableHead>
+                    <TableHead className="w-24 text-center">Total</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredSupplierReturns.length > 0 ? (
+                    filteredSupplierReturns.map((item) => (
+                      <TableRow key={item.returnID}>
+                        <TableCell>{item.dateAdded}</TableCell>
+                        <TableCell>{item.productCode}</TableCell>
+                        <TableCell>{item.supplier}</TableCell>
+                        <TableCell>{item.product}</TableCell>
+                        <TableCell className="text-center">{item.quantity}</TableCell>
+                        <TableCell className="text-center">{item.totalCost}</TableCell>
+                        <TableCell className="w-[50px] text-center">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-gray-500 hover:text-red-600 h-6 w-6"
+                          >
+                            <Trash2 size={16} />
+                          </Button>
+                        </TableCell>
                         </TableRow>
                       ))
                     ) : (
@@ -386,3 +510,4 @@ export default function ReturnsPage() {
     </SidebarProvider>
   );
 }
+
