@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useRouter } from 'next/navigation';
 import { AppSidebar } from "@/components/admin-sidebar"
 import {
   SidebarProvider,
@@ -12,8 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
-import { Search, ListFilter, Trash2, Ellipsis } from "lucide-react";
-import { useState } from "react";
+import { Search, ListFilter, Trash2, Ellipsis,PackagePlus } from "lucide-react";
 
 // sample data for deliveries
 const delivery = [
@@ -29,6 +29,7 @@ const delivery = [
 ];
 
 export default function DeliveriesPage() {
+  const router = useRouter(); 
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -52,7 +53,10 @@ export default function DeliveriesPage() {
               </Button>
             </div>
             <div className="flex space-x-2">
-              <Button className="bg-blue-400 text-white">Add Delivery</Button>
+              <Button className="bg-blue-400 text-white" onClick={() => router.push("./deliveries/add-delivery")}>
+                <PackagePlus size={16} />
+                  Add Delivery
+              </Button>
             </div>
           </div>
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">

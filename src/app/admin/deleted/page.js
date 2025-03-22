@@ -77,7 +77,7 @@ export default function DeletedPage() {
             </div>
           </div>
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
-          <h1 className="text-gray-600 font-bold">Deleted Transaction</h1>
+          <h1 className="text-gray-600 font-bold">Deleted Transactions</h1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -88,7 +88,7 @@ export default function DeletedPage() {
                   <TableHead>Product</TableHead>
                   <TableHead>Price</TableHead>
                   <TableHead>Details</TableHead>
-                  <TableHead>Retrive/Delete</TableHead>
+                  <TableHead>Retrieve/Delete</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
