@@ -53,7 +53,7 @@ export default function DeliveriesPage() {
               </Button>
             </div>
             <div className="flex space-x-2">
-              <Button className="bg-blue-400 text-white" onClick={() => router.push("./deliveries/add-delivery")}>
+              <Button className="bg-blue-400 text-white" onClick={() => router.push("./deliveries-add-delivery")}>
                 <PackagePlus size={16} />
                   Add Delivery
               </Button>

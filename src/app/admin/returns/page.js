@@ -195,7 +195,8 @@ useEffect(() => {
                         <SelectItem value="Product A">Product A</SelectItem>
                         <SelectItem value="Product B">Product B</SelectItem>
                       </SelectContent>
-                    </Select>               
+                    </Select>   
+                                
                     <Label>Supplier</Label>
                     <Select>
                       <SelectTrigger>
