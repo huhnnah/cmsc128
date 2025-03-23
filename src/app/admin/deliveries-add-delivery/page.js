@@ -72,7 +72,7 @@ export default function BatchDeliveriesPage() {
                   </div>
                   <div className="w-1/3">
                     <Label htmlFor="deliveryNumber" className="mb-1 block">Delivery Number</Label>
-                    <Input id="deliveryNumber" placeholder="DR-12345" />
+                    <Input id="deliveryNumber" placeholder="DR-12345" className="text-center"/>
                   </div>
                   <div className="flex items-end">
                     <Button className="bg-blue-500 text-white">

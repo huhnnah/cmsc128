@@ -263,7 +263,7 @@ useEffect(() => {
                 </Sheet>
             )} 
 
-            {/* For Add Product Return Sheet To Supplier Returns */}            
+            {/* For Add Product Return Sheet in Return to Supplier */}            
             {activeTab === "supplier" && (
               <Sheet>
                 <SheetTrigger asChild>
