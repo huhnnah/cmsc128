@@ -51,7 +51,7 @@ const data = {
       icon: TicketPercentIcon,
     },
     {
-      title: "Void Transactions",
+      title: "Deleted Transactions",
       url: "./void",
       icon: CircleXIcon,
     }
