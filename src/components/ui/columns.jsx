@@ -3,7 +3,7 @@
 import React from "react";
 import { Trash2 } from "lucide-react";
 
-const columns = [
+const getColumns = (handleDelete) => [
     {
       accessorKey: "Product Code",
       header: "Product Code",
@@ -13,20 +13,20 @@ const columns = [
       header: "Supplier",
     },
     {
-        accessorKey: "Brand",
-        header: "Brand",
+      accessorKey: "Brand",
+      header: "Brand",
     },
     {
-        accessorKey: "Product",
-        header: "Product",
+      accessorKey: "Product",
+      header: "Product",
     },
     {
-        accessorKey: "Price",
-        header: "Price",
+      accessorKey: "Price",
+      header: "Price",
     },
     {
-        accessorKey: "Quantity",
-        header: "Quantity",
+      accessorKey: "Quantity",
+      header: "Quantity",
     },
     {
       accessorKey: "Total",
@@ -41,14 +41,17 @@ const columns = [
       },
     },
     {
-        accessorKey: "Delete",
-        header: "",
-        cell: () => (
-          <button className="text-gray-500 hover:text-gray-800">
-            <Trash2 size={15} />
-          </button>
-        ),
-      },
-  ];
+      accessorKey: "Delete",
+      header: "",
+      cell: ({ row }) => (
+        <button
+          className="text-red-500 hover:text-red-700"
+          onClick={() => handleDelete(row.original["Product Code"])}
+        >
+          <Trash2 size={15} />
+        </button>
+      ),
+    },
+];
 
-export default columns;
+export default getColumns;
