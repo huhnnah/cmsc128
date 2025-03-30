@@ -9,15 +9,14 @@ import { Label } from "@/components/ui/label"
 import {   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger, } from "@/components/ui/sheet"
-  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Search, Download, Trash2, Ellipsis, Plus } from "lucide-react";
+import { Search, Trash2, Ellipsis, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 
 
@@ -68,8 +67,7 @@ export default function ReturnsPage() {
   const [filteredSupplierReturns, setFilteredSupplierReturns] = useState([]);
   const [selectedFilter] = useState("All");
   const [activeTab, setActiveTab] = useState("customer");
-  const SHEET_LABELS = ["Add Customer Return", "Add Supplier Return"];
-
+  
   // Process and merge data from transactions and products tables for customer returns
   useEffect(() => {
     // Filter transactions to only include returns
@@ -169,9 +167,9 @@ useEffect(() => {
       <div className="flex h-screen w-screen">
         <AppSidebar />
         <div className="flex-1 p-4 flex flex-col w-full">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mt-4 mb-6">
             <div>
-              <h1 className="text-xl text-gray-600 font-medium">Processing of Returns</h1>
+              <h1 className="text-lg text-gray-600 font-medium">Processing of Returns</h1>
             </div>
 
             {/* For Add Product Return Sheet from Customer Returns */}
@@ -355,7 +353,7 @@ useEffect(() => {
           </div>
 
           <div className="flex items-center justify-between mb-4">
-            <div className="relative w-64">
+            <div className="relative w-auto">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
               <Input
                 placeholder="Search returns..."
@@ -374,7 +372,7 @@ useEffect(() => {
             
             {/* Customer Returns Tab Content */}
             <TabsContent value="customer" className="mt-4">
-              <div className=" flex flex-col overflow-auto w-full">
+              <div className="bg-white rounded-lg shadow-sm border flex-col overflow-auto w-full">
                 <Table className="w-full">
                   <TableHeader>
                     <TableRow>

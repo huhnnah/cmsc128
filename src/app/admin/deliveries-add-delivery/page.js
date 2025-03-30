@@ -12,7 +12,6 @@ import {
 import {
     Card,
     CardContent,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -89,7 +88,7 @@ export default function BatchDeliveriesPage() {
           <div className="flex flex-col lg:flex-row gap-4 items-stretch">
             {/* Left side - Product items table */}
             <Card className="w-full lg:w-2/3 flex flex-col">
-              <CardContent className="p-4 flex flex-col felx-1 justify-between flex-grow">
+              <CardContent className="p-4 flex flex-col justify-between flex-grow">
                 {/* Product items table with scrollable container */}
                 <div className="overflow-x-auto max-h-[60vh] flex-grow">
                   <Table>
