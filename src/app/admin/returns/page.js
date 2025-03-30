@@ -367,7 +367,7 @@ useEffect(() => {
           </div>
           
           <Tabs defaultValue="customer" className="w-full mb-4" onValueChange={setActiveTab}>
-            <TabsList className="w-full flex justify-start bg-white border rounded-md px-4">
+            <TabsList className="w-full flex justify-start bg-white border rounded-md px-6 py-5">
               <TabsTrigger value="customer" className="data-[state=active]:text-indigo-600 hover:text-black">RETURN FROM CUSTOMER</TabsTrigger>
               <TabsTrigger value="supplier" className="data-[state=active]:text-indigo-600 hover:text-black">RETURN TO SUPPLIER</TabsTrigger>
             </TabsList>

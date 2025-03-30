@@ -131,7 +131,7 @@ export default function ReportsPage() {
             </div>
           </div>
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
-          <h1 className="text-gray-600 font-bold">Discounts</h1>
+          <h1 className="text-gray-600 font-bold">Reports</h1>
             <Table>
               <TableHeader>
                 <TableRow>
