@@ -28,7 +28,7 @@ export default function ConfigurationsPage() {
   const [searchCategory, setSearchCategory] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   const [searchPaymentType, setSearchPaymentType] = useState("");
-  const [activeTab, setActiveTab] = useState("add-suplier");
+  const [ , setActiveTab] = useState("add-suplier");
 
   const filteredSuppliers = supplierData.filter(supplier =>
     supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
