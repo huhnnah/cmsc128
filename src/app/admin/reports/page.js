@@ -217,6 +217,7 @@ export default function ReportsPage() {
                   <TableCell className="font-bold">₱{totalSales.toLocaleString()}</TableCell>
                   <TableCell className="font-bold">₱{totalCogs.toLocaleString()}</TableCell>
                   <TableCell className="font-bold">₱{totalNet.toLocaleString()}</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableFooter>
             </Table>

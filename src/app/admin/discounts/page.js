@@ -199,6 +199,7 @@ export default function DiscountsPage() {
                 <TableRow className="bg-white">  
                   <TableCell colSpan={6} className="text-right font-bold">Total Discounted Sales:</TableCell>
                   <TableCell className="font-bold">₱{totalDiscountedSales.toLocaleString()}</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableFooter>
             </Table>

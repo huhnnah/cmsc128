@@ -191,7 +191,7 @@ export default function DeletedPage() {
                               <span className="text-lg text-gray-400 font-normal italic">{transaction.transactionID}</span></DialogTitle>
                             <DialogClose />
                           </DialogHeader>
-                          <p className='text-sm text-gray-800 mt-2 pl-4'> Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction. </p>
+                          <p className='text-sm text-gray-800 mt-2 pl-4'> Warning: This action will permanently remove the transaction from your records. Enter the admin password to continue. </p>
                           <div className="flex items-center gap-4 mt-4 pl-10">          
                             <div className="flex-1">
                               <label htmlFor={`password-${transaction.transactionID}`} className="text-base font-medium text-gray-700 block mb-2">
