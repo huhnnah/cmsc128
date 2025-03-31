@@ -11,9 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
-//import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import { Search, ListFilter, Download, Trash2, Ellipsis } from "lucide-react";
-import { useState } from "react";
 
 //Not fetching from an API yet, so data is currently static
 
@@ -157,8 +155,7 @@ export default function OrdersPage() {
                             <p className="text-gray-500">Product details not found.</p>
                           )}
                         </DialogContent>
-                      </Dialog>
-                      
+                      </Dialog>                     
                       {/* For deleting transactions */}
                       <Dialog>
                         <DialogTrigger asChild>

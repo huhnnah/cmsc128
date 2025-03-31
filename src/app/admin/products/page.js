@@ -10,7 +10,7 @@ import { Search, ListFilter, Download, FilePen, Trash2 } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from "@/components/ui/dialog";
 
 // Sample product data
 const products = [
@@ -214,9 +214,41 @@ export default function ProductTable() {
                     <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600" onClick={() => openEditSheet(product)}>
                       <FilePen size={16} />
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
-                      <Trash2 size={16} />
-                    </Button>
+                     {/* For deleting transactions */}
+                     <Dialog>
+                        <DialogTrigger asChild>
+                      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                        <Trash2 size={16} />
+                      </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-3xl p-7 text-gray-700">
+                        <DialogHeader>
+                            <DialogTitle>
+                              <span className="text-lg text-red-900">Delete Transaction</span>{" "}
+                              <span className="text-lg text-gray-400 font-normal italic">{product.productCode}</span></DialogTitle>
+                            <DialogClose />
+                          </DialogHeader>
+                          <p className='text-sm text-gray-800 mt-2 pl-4'> Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction. </p>
+                          <div className="flex items-center gap-4 mt-4 pl-10">          
+                            <div className="flex-1">
+                              <label htmlFor={`password-${product.productCode}`} className="text-base font-medium text-gray-700 block mb-2">
+                                Admin Password
+                              </label>
+                              <Input type="password" id={`password-${product.productCode}`} required
+                                placeholder="Enter valid password"  className="w-full" 
+                              />
+                            </div>
+          
+                            <Button 
+                              className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
+                              onClick={() => handleDelete(product.productCode, 
+                                document.getElementById(`password-${product.productCode}`).value)}
+                            >
+                              DELETE TRANSACTION
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                   </TableHead>
                 </TableRow>
               ))}

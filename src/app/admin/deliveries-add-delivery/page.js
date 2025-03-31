@@ -16,6 +16,8 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
+
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -115,9 +117,40 @@ export default function BatchDeliveriesPage() {
                           <TableCell>{item.unitPrice}</TableCell>
                           <TableCell>{item.total}</TableCell>
                           <TableCell>
-                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
-                              <Trash2 size={16} />
+                      {/* For deleting transactions */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                        <Trash2 size={16} />
+                      </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-3xl p-7 text-gray-700">
+                        <DialogHeader>
+                            <DialogTitle>
+                              <span className="text-lg text-red-900">Delete Transaction</span>{" "}
+                              <span className="text-lg text-gray-400 font-normal italic">{item.productCode}</span></DialogTitle>
+                            <DialogClose />
+                          </DialogHeader>
+                          <p className='text-sm text-gray-800 mt-2 pl-4'> Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction. </p>
+                          <div className="flex items-center gap-4 mt-4 pl-10">          
+                            <div className="flex-1">
+                              <label htmlFor={`password-${item.productCode}`} className="text-base font-medium text-gray-700 block mb-2">
+                                Admin Password
+                              </label>
+                              <Input type="password" id={`password-${item.productCode}`} required
+                                placeholder="Enter valid password"  className="w-full" 
+                              />
+                            </div>       
+                            <Button 
+                              className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
+                              onClick={() => handleDelete(item.productCode, 
+                                document.getElementById(`password-${item.productCode}`).value)}
+                            >
+                              DELETE TRANSACTION
                             </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                           </TableCell>
                         </TableRow>
                       ))}
