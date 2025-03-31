@@ -28,6 +28,7 @@ export default function ConfigurationsPage() {
   const [searchCategory, setSearchCategory] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   const [searchPaymentType, setSearchPaymentType] = useState("");
+  const [activeTab, setActiveTab] = useState("add-suplier");
 
   const filteredSuppliers = supplierData.filter(supplier =>
     supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,13 +42,13 @@ export default function ConfigurationsPage() {
         <div className="flex-1 p-4 flex flex-col w-full">
           <h1 className="text-lg font-medium text-gray-600 mt-4 mb-6">Configurations</h1>
 
-          <Tabs defaultValue="add-supplier" className="w-full">
+          <Tabs defaultValue="add-supplier" className="w-full mb-4" onValueChange={setActiveTab}>
             <TabsList className="w-full flex justify-start bg-white shadow-md rounded-md px-6 py-6 mb-4">
-              <TabsTrigger value="add-supplier">ADD SUPPLIER</TabsTrigger>
-              <TabsTrigger value="add-brand">ADD BRAND</TabsTrigger>
-              <TabsTrigger value="add-category">ADD CATEGORY</TabsTrigger>
-              <TabsTrigger value="add-product-status">ADD PRODUCT STATUS</TabsTrigger>
-              <TabsTrigger value="add-payment-type">ADD TYPE OF PAYMENT</TabsTrigger>
+              <TabsTrigger value="add-supplier" className="data-[state=active]:text-indigo-600 hover:text-black">ADD SUPPLIER</TabsTrigger>
+              <TabsTrigger value="add-brand" className="data-[state=active]:text-indigo-600 hover:text-black">ADD BRAND</TabsTrigger>
+              <TabsTrigger value="add-category" className="data-[state=active]:text-indigo-600 hover:text-black">ADD CATEGORY</TabsTrigger>
+              <TabsTrigger value="add-product-status" className="data-[state=active]:text-indigo-600 hover:text-black">ADD PRODUCT STATUS</TabsTrigger>
+              <TabsTrigger value="add-payment-type" className="data-[state=active]:text-indigo-600 hover:text-black">  ADD TYPE OF PAYMENT</TabsTrigger>
             </TabsList>
 
             <div className="flex flex-col lg:flex-row gap-6">
