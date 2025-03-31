@@ -14,9 +14,9 @@ import {   Sheet,
   SheetTitle,
   SheetTrigger, } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Search, Trash2, Ellipsis, Plus } from "lucide-react";
+import { Trash2, Ellipsis } from "lucide-react";
 import { useState, useEffect } from "react";
 
 
@@ -58,7 +58,6 @@ const deliveries = [
   { dateAdded: "11/12/22", deliveryNum: "D-188097", supplier: "Lazer", productCode: "188097", totalCost: "₱295" },
   { dateAdded: "11/12/22", deliveryNum: "D-188098", supplier: "Lazer", productCode: "188098", totalCost: "₱15,995" },
 ];
-
 
 
 export default function ReturnsPage() {
@@ -167,7 +166,7 @@ useEffect(() => {
       <div className="flex h-screen w-screen">
         <AppSidebar />
         <div className="flex-1 p-4 flex flex-col w-full">
-          <div className="flex justify-between items-center mt-4 mb-6">
+          <div className="flex items-center justify-between mb-4 bg-white p-2 rounded-lg">
             <div>
               <h1 className="text-lg text-gray-600 font-medium">Processing of Returns</h1>
             </div>
@@ -351,37 +350,25 @@ useEffect(() => {
             )}                             
             </div>    
           </div>
-
-          <div className="flex items-center justify-between mb-4">
-            <div className="relative w-auto">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
-              <Input
-                placeholder="Search returns..."
-                className="pl-8"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-          
+         
           <Tabs defaultValue="customer" className="w-full mb-4" onValueChange={setActiveTab}>
-            <TabsList className="w-full flex justify-start bg-white border rounded-md px-6 py-5">
+            <TabsList className="w-full flex justify-start bg-white shadow-md rounded-md px-6 py-6 mb-4">
               <TabsTrigger value="customer" className="data-[state=active]:text-indigo-600 hover:text-black">RETURN FROM CUSTOMER</TabsTrigger>
               <TabsTrigger value="supplier" className="data-[state=active]:text-indigo-600 hover:text-black">RETURN TO SUPPLIER</TabsTrigger>
             </TabsList>
             
             {/* Customer Returns Tab Content */}
             <TabsContent value="customer" className="mt-4">
-              <div className="bg-white rounded-lg shadow-sm border flex-col overflow-auto w-full">
-                <Table className="w-full">
+              <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
+                <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-20">Date</TableHead>
-                      <TableHead className="w-24">Transaction ID</TableHead>
-                      <TableHead className="w-0">Product</TableHead>
-                      <TableHead className="w-16 text-center">Quantity</TableHead>
-                      <TableHead className="w-0 text-center">Total</TableHead>
-                      <TableHead className="w-1 text-center">Details</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Transaction ID</TableHead>
+                      <TableHead>Product</TableHead>
+                      <TableHead>Quantity</TableHead>
+                      <TableHead>Total</TableHead>
+                      <TableHead>Details</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -391,58 +378,98 @@ useEffect(() => {
                           <TableCell>{item.dateAdded}</TableCell>
                           <TableCell>{item.transactionID}</TableCell>
                           <TableCell>{item.product}</TableCell>
-                          <TableCell className="text-center">{item.quantity}</TableCell>
-                          <TableCell className="text-center">{item.totalPrice}</TableCell>
-
-                          <TableCell className="text-center">
-                          <div className="flex justify-center space-x-2"> 
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 w-8">
-                                  <Ellipsis size={16} />
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-3xl p-6">
-                                <DialogHeader>
-                                  <DialogTitle>Return Details</DialogTitle>
-                                </DialogHeader>
-                                <div className="py-4">
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableHead className="text-center whitespace-nowrap">Date</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Product Code</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Supplier</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Brand</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Category</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Product</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Quantity</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Discount</TableHead>
-                                        <TableHead className="text-center whitespace-nowrap">Total</TableHead>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell className="text-center">{item.dateAdded}</TableCell>
-                                        <TableCell className="text-center">{item.productCode}</TableCell>
-                                        <TableCell className="text-center">{item.supplier}</TableCell>
-                                        <TableCell className="text-center">{item.brand}</TableCell>
-                                        <TableCell className="text-center">{item.category}</TableCell>
-                                        <TableCell className="text-center">{item.product}</TableCell>
-                                        <TableCell className="text-center">{item.quantity}</TableCell>
-                                        <TableCell className="text-center">{item.discount}</TableCell>
-                                        <TableCell className="text-center">{item.totalPrice}</TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
+                          <TableCell>{item.quantity}</TableCell>
+                          <TableCell>{item.totalPrice}</TableCell>
+                          <TableCell className="flex space-x-2">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
+                                <Ellipsis size={16} />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="w-[90vw] sm:w-[600px] md:w-[750px] lg:w-[900px] xl:w-[1100px] max-w-[95vw] p-4 sm:p-6 overflow-y-auto max-h-[90vh]">
+                              <DialogHeader>
+                                <DialogTitle className="text-xl text-gray-600 font-medium pb-0">Return Details</DialogTitle>
+                                <DialogClose />
+                              </DialogHeader>
+                              <div className="py-4">
+                                <Table>
+                                  <TableHeader>
+                                    <TableRow>
+                                      <TableHead className="text-center">Date</TableHead>
+                                      <TableHead className="text-center">Product Code</TableHead>
+                                      <TableHead className="text-center">Supplier</TableHead>
+                                      <TableHead className="text-center">Brand</TableHead>
+                                      <TableHead className="text-center">Category</TableHead>
+                                      <TableHead className="text-center">Product</TableHead>
+                                      <TableHead className="text-center">Quantity</TableHead>
+                                      <TableHead className="text-center">Discount</TableHead>
+                                      <TableHead className="text-center">Total</TableHead>
+                                    </TableRow>
+                                  </TableHeader>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell className="text-center">{item.dateAdded}</TableCell>
+                                      <TableCell className="text-center">{item.productCode}</TableCell>
+                                      <TableCell className="text-center">{item.supplier}</TableCell>
+                                      <TableCell className="text-center">{item.brand}</TableCell>
+                                      <TableCell className="text-center">{item.category}</TableCell>
+                                      <TableCell className="text-center">{item.product}</TableCell>
+                                      <TableCell className="text-center">{item.quantity}</TableCell>
+                                      <TableCell className="text-center">{item.discount}</TableCell>
+                                      <TableCell className="text-center">{item.totalPrice}</TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                          {/* For delete transactions */}
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                                <Trash2 size={16} />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-3xl p-7 text-gray-700">
+                              <DialogHeader>
+                                <DialogTitle>
+                                  <span className="text-lg text-red-900">Delete Transaction</span>{" "}
+                                  <span className="text-lg text-gray-400 font-normal italic">{item.transactionID}</span>
+                                </DialogTitle>
+                                <DialogClose />
+                              </DialogHeader>
+                              <p className='text-sm text-gray-800 mt-2 pl-4'>
+                                Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction.
+                              </p>
+                              <div className="flex items-center gap-4 mt-4 pl-10">
+                                <div className="flex-1">
+                                  <label htmlFor={`password-${item.transactionID}`} className="text-base font-medium text-gray-700 block mb-2">
+                                    Admin Password
+                                  </label>
+                                  <Input
+                                    type="password"
+                                    id={`password-${item.transactionID}`}
+                                    required
+                                    placeholder="Enter valid password"
+                                    className="w-full"
+                                  />
                                 </div>
-                              </DialogContent>
-                            </Dialog>
-                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
-                              <Trash2 size={16}/>
-                            </Button>
-                          </div>
-                          </TableCell>
+                                <Button
+                                  className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
+                                  onClick={() =>
+                                    handleDelete(
+                                      item.transactionID,
+                                      document.getElementById(`password-${item.transactionID}`).value
+                                    )
+                                  }
+                                >
+                                  DELETE TRANSACTION
+                                </Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        </TableCell>
                         </TableRow>
                       ))
                     ) : (
@@ -459,7 +486,7 @@ useEffect(() => {
 
             {/* Supplier Returns Tab Content */}
             <TabsContent value="supplier" className="mt-4">
-              <div className="bg-white rounded-lg shadow-sm border flex-col overflow-auto w-full">
+            <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
                 <Table className="w-full">
                   <TableHeader>
                     <TableRow>
@@ -482,13 +509,51 @@ useEffect(() => {
                         <TableCell className="text-center">{item.quantity}</TableCell>
                         <TableCell className="text-center">{item.totalCost}</TableCell>
                         <TableCell className="w-[50px] text-center">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-gray-500 hover:text-red-600 h-6 w-6"
-                          >
-                            <Trash2 size={16} />
-                          </Button>
+                          {/* Delete Dialog */}
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                                <Trash2 size={16} />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-3xl p-7 text-gray-700">
+                              <DialogHeader>
+                                <DialogTitle>
+                                  <span className="text-lg text-red-900">Delete Transaction</span>{" "}
+                                  <span className="text-lg text-gray-400 font-normal italic">{item.productCode}</span>
+                                </DialogTitle>
+                                <DialogClose />
+                              </DialogHeader>
+                              <p className='text-sm text-gray-800 mt-2 pl-4'>
+                                Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction.
+                              </p>
+                              <div className="flex items-center gap-4 mt-4 pl-10">
+                                <div className="flex-1">
+                                  <label htmlFor={`password-${item.productCode}`} className="text-base font-medium text-gray-700 block mb-2">
+                                    Admin Password
+                                  </label>
+                                  <Input
+                                    type="password"
+                                    id={`password-${item.productCode}`}
+                                    required
+                                    placeholder="Enter valid password"
+                                    className="w-full"
+                                  />
+                                </div>
+                                <Button
+                                  className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
+                                  onClick={() =>
+                                    handleDelete(
+                                      item.productCode,
+                                      document.getElementById(`password-${item.productCode}`).value
+                                    )
+                                  }
+                                >
+                                  DELETE TRANSACTION
+                                </Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </TableCell>
                         </TableRow>
                       ))

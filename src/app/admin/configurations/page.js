@@ -42,7 +42,7 @@ export default function ConfigurationsPage() {
           <h1 className="text-lg font-medium text-gray-600 mt-4 mb-6">Configurations</h1>
 
           <Tabs defaultValue="add-supplier" className="w-full">
-            <TabsList className="w-full flex justify-start bg-white border rounded-md px-6 py-6 mb-4">
+            <TabsList className="w-full flex justify-start bg-white shadow-md rounded-md px-6 py-6 mb-4">
               <TabsTrigger value="add-supplier">ADD SUPPLIER</TabsTrigger>
               <TabsTrigger value="add-brand">ADD BRAND</TabsTrigger>
               <TabsTrigger value="add-category">ADD CATEGORY</TabsTrigger>
