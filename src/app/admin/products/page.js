@@ -53,7 +53,7 @@ export default function ProductTable() {
               </div>
               <Button variant="outline" className="flex items-center space-x-2">
                 <ListFilter className="w-4 h-4" />
-                <span>Sort</span>
+                <span>Filter</span>
               </Button>
             </div>
             <div className="flex space-x-2">
@@ -61,11 +61,11 @@ export default function ProductTable() {
                 <SheetTrigger asChild>
                   <Button className="bg-blue-400 text-white">Add Product</Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[400px] h-full overflow-y-auto">
+                <SheetContent side="right" className="w-[400px] h-full flex flex-col">
                   <SheetHeader>
-                    <SheetTitle className="text-blue-400 text-xl font-bold mb-4">Add New Product</SheetTitle>
+                    <SheetTitle className="text-blue-400 text-xl font-bold">Add New Product</SheetTitle>
                   </SheetHeader>
-                  <div className="flex flex-col space-y-3">
+                  <div className="overflow-y-auto flex flex-col space-y-4">
                     <Label className>Product Code</Label>
                     <Input placeholder="Enter product code" />
 
@@ -205,69 +205,69 @@ export default function ProductTable() {
                     <TableCell>{product.supplier}</TableCell>
                     <TableCell>{product.brand}</TableCell>
                     <TableCell>{product.category}</TableCell>
-                  <TableHead>{product.product}</TableHead>
-                  <TableHead>{product.quantity} pcs</TableHead>
-                  <TableHead>{product.price}</TableHead>
-                  <TableHead>{product.sellingprice}</TableHead>
-                  <TableHead className={`font-semibold ${getStatusTextColor(product.status)}`}>{product.status}</TableHead>
-                  <TableHead className="flex space-x-2">
-                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600" onClick={() => openEditSheet(product)}>
-                      <FilePen size={16} />
-                    </Button>
-                     {/* For deleting transactions */}
-                     <Dialog>
-                        <DialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
-                        <Trash2 size={16} />
+                    <TableCell>{product.product}</TableCell>
+                    <TableCell>{product.quantity} pcs</TableCell>
+                    <TableCell>{product.price}</TableCell>
+                    <TableCell>{product.sellingprice}</TableCell>
+                    <TableCell className={`font-semibold ${getStatusTextColor(product.status)}`}>{product.status}</TableCell>
+                    <TableCell className="flex space-x-2">
+                      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600" onClick={() => openEditSheet(product)}>
+                        <FilePen size={16} />
                       </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-3xl p-7 text-gray-700">
-                        <DialogHeader>
-                            <DialogTitle>
-                              <span className="text-lg text-red-900">Delete Transaction</span>{" "}
-                              <span className="text-lg text-gray-400 font-normal italic">{product.productCode}</span></DialogTitle>
-                            <DialogClose />
-                          </DialogHeader>
-                          <p className='text-sm text-gray-800 mt-2 pl-4'> Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction. </p>
-                          <div className="flex items-center gap-4 mt-4 pl-10">          
-                            <div className="flex-1">
-                              <label htmlFor={`password-${product.productCode}`} className="text-base font-medium text-gray-700 block mb-2">
-                                Admin Password
-                              </label>
-                              <Input type="password" id={`password-${product.productCode}`} required
-                                placeholder="Enter valid password"  className="w-full" 
-                              />
+                      {/* For deleting transactions */}
+                      <Dialog>
+                          <DialogTrigger asChild>
+                        <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                          <Trash2 size={16} />
+                        </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-3xl p-7 text-gray-700">
+                          <DialogHeader>
+                              <DialogTitle>
+                                <span className="text-lg text-red-900">Delete Transaction</span>{" "}
+                                <span className="text-lg text-gray-400 font-normal italic">{product.productCode}</span></DialogTitle>
+                              <DialogClose />
+                            </DialogHeader>
+                            <p className='text-sm text-gray-800 mt-2 pl-4'> Deleting this transaction will reflect on Void Transactions. Enter the admin password to delete this transaction. </p>
+                            <div className="flex items-center gap-4 mt-4 pl-10">          
+                              <div className="flex-1">
+                                <label htmlFor={`password-${product.productCode}`} className="text-base font-medium text-gray-700 block mb-2">
+                                  Admin Password
+                                </label>
+                                <Input type="password" id={`password-${product.productCode}`} required
+                                  placeholder="Enter valid password"  className="w-full" 
+                                />
+                              </div>
+            
+                              <Button 
+                                className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
+                                onClick={() => handleDelete(product.productCode, 
+                                  document.getElementById(`password-${product.productCode}`).value)}
+                              >
+                                DELETE TRANSACTION
+                              </Button>
                             </div>
-          
-                            <Button 
-                              className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
-                              onClick={() => handleDelete(product.productCode, 
-                                document.getElementById(`password-${product.productCode}`).value)}
-                            >
-                              DELETE TRANSACTION
-                            </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                  </TableHead>
+                          </DialogContent>
+                        </Dialog>
+                    </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="right" className="w-[400px] h-full overflow-y-auto">
+        <SheetContent side="right" className="w-[400px] h-full flex flex-col">
           <SheetHeader>
             <SheetTitle className="text-blue-400 text-xl font-bold">Edit Product Details</SheetTitle>
           </SheetHeader>
           {selectedProduct && (
-            <div className="flex flex-col space-y-3">
-              <label>Product Code</label>
+            <div className="overflow-y-auto flex flex-col space-y-4">
+              <label className="text-black font-semibold text-sm">Product Code</label>
               <Input value={selectedProduct.productCode} disabled className="bg-gray-200" />
 
-              <label>Date Added</label>
+              <label className="text-black font-semibold text-sm">Date Added</label>
               <Input value={selectedProduct.dateAdded} disabled className="bg-gray-200" />
 
-              <label>Supplier</label>
+              <label className="text-black font-semibold text-sm">Supplier</label>
               <Select value={selectedProduct.supplier}>
                 <SelectTrigger>
                   <SelectValue placeholder={selectedProduct.supplier}/>
@@ -278,7 +278,7 @@ export default function ProductTable() {
                 </SelectContent>
               </Select>
 
-              <label>Brand</label>
+              <label className="text-black font-semibold text-sm">Brand</label>
               <Select value={selectedProduct.brand}>
                 <SelectTrigger>
                   <SelectValue placeholder={selectedProduct.brand}/>
@@ -289,7 +289,7 @@ export default function ProductTable() {
                 </SelectContent>
               </Select>
 
-              <label>Category</label>
+              <label className="text-black font-semibold text-sm">Category</label>
               <Select value={selectedProduct.category}>
                 <SelectTrigger>
                   <SelectValue placeholder={selectedProduct.category} />
@@ -300,19 +300,19 @@ export default function ProductTable() {
                 </SelectContent>
               </Select>
 
-              <label>Product Name</label>
+              <label className="text-black font-semibold text-sm">Product Name</label>
               <Input placeholder={selectedProduct.product} />
 
-              <label>Quantity</label>
+              <label className="text-black font-semibold text-sm">Quantity</label>
               <Input type="number" defaultValue={selectedProduct.quantity} />
 
-              <label>Price</label>
+              <label className="text-black font-semibold text-sm">Price</label>
               <Input type="text" defaultValue={selectedProduct.price} />
 
-              <label>Selling Price</label>
+              <label className="text-black font-semibold text-sm">Selling Price</label>
               <Input type="text" defaultValue={selectedProduct.sellingprice} />
 
-              <label>Product Status</label>
+              <label className="text-black font-semibold text-sm">Product Status</label>
               <Select>
                 <SelectTrigger>
                   <SelectValue placeholder={selectedProduct.status} />
