@@ -11,6 +11,7 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/co
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu";
 
 // Sample product data
 const products = [
@@ -34,6 +35,14 @@ export default function ProductTable() {
     setSheetOpen(true);
   };
 
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedSubFilter, setSelectedSubFilter] = useState(null);
+
+  const handleFilterSelect = (filter, subFilter = null) => {
+    setSelectedFilter(filter);
+    setSelectedSubFilter(subFilter);
+  };
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -51,10 +60,84 @@ export default function ProductTable() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
-              <Button variant="outline" className="flex items-center space-x-2">
-                <ListFilter className="w-4 h-4" />
-                <span>Filter</span>
-              </Button>
+              <div className="flex items-center space-x-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex items-center space-x-2">
+                      <ListFilter className="w-4 h-4" />
+                      <span>Filter</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Supplier</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Supplier", "Cort")}>
+                          Cort
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Supplier", "Lazer")}>
+                          Lazer
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Brand</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Brand", "Cort")}>
+                          Cort
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Brand", "Lazer")}>
+                          Lazer
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    
+                    <DropdownMenuSub>
+
+                    <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Ascending")}>
+                          Ascending
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Descending")}>
+                          Descending
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "Low to High")}>
+                          Low to High
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "High to Low")}>
+                          High to Low
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Product Status</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Status", "Active")}>
+                          Active
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Status", "Out of Stock")}>
+                          Out of Stock
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Status", "Low Stock")}>
+                          Low Stock
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Status", "Discontinued")}>
+                          Discontinued
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
             <div className="flex space-x-2">
               <Sheet>

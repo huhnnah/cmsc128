@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarProvider} from "@/components/ui/sidebar"
 import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell, TableFooter } from "@/components/ui/table";
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
 import { Search, ListFilter, Download, Trash2, Ellipsis } from "lucide-react";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu";
 
 // sample product data
 const products = [
@@ -53,6 +55,14 @@ export default function DiscountsPage() {
     return total + amount;
   }, 0);
 
+    const [selectedFilter, setSelectedFilter] = useState(null);
+    const [selectedSubFilter, setSelectedSubFilter] = useState(null);
+  
+    const handleFilterSelect = (filter, subFilter = null) => {
+      setSelectedFilter(filter);
+      setSelectedSubFilter(subFilter);
+    };
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -70,10 +80,53 @@ export default function DiscountsPage() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
-              <Button variant="outline" className="flex items-center space-x-2">
-                <ListFilter className="w-4 h-4" />
-                <span>Filter</span>
-              </Button>
+              <div className="flex items-center space-x-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex items-center space-x-2">
+                      <ListFilter className="w-4 h-4" />
+                      <span>Filter</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Receipt Number</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Receipt Number", "Ascending")}>
+                          Ascending
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Receipt Number", "Descending")}>
+                          Descending
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    
+                    <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Ascending")}>
+                          Ascending
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Descending")}>
+                          Descending
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "Low to High")}>
+                          Low to High
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "High to Low")}>
+                          High to Low
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
             <div className="flex space-x-2">
             <Button className="bg-blue-400 text-white">

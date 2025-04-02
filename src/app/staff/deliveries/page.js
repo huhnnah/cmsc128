@@ -1,19 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { AppSidebar } from "@/components/staff-sidebar";
-import {
-  SidebarProvider,
-} from "@/components/ui/sidebar"
-import { 
-  Table, TableBody, TableHead, TableHeader, TableRow, TableCell 
-} from "@/components/ui/table";
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Search, ListFilter, Trash2, Ellipsis, PackagePlus } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu";
 
 // Sample data mapping for deliveries with their associated products
 const deliveryProducts = {
@@ -44,6 +42,14 @@ const delivery = [
 export default function DeliveriesPage() {
   const router = useRouter(); 
   
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedSubFilter, setSelectedSubFilter] = useState(null);
+
+  const handleFilterSelect = (filter, subFilter = null) => {
+    setSelectedFilter(filter);
+    setSelectedSubFilter(subFilter);
+  };
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -61,10 +67,54 @@ export default function DeliveriesPage() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
-              <Button variant="outline" className="flex items-center space-x-2">
-                <ListFilter className="w-4 h-4" />
-                <span>Filter</span>
-              </Button>
+              <div className="flex items-center space-x-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex items-center space-x-2">
+                      <ListFilter className="w-4 h-4" />
+                      <span>Filter</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Delivery Number</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Delivery Number", "Ascending")}>
+                          Ascending
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Delivery Number", "Descending")}>
+                          Descending
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Supplier</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Supplier", "Cort")}>
+                          Cort
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Supplier", "Lazer")}>
+                          Lazer
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger> Total Cost</DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "Low to High")}>
+                          Low to High
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "High to Low")}>
+                          High to Low
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
             <div className="flex space-x-2">
               <Button className="bg-blue-400 text-white" onClick={() => router.push("./deliveries-add-delivery")}>
