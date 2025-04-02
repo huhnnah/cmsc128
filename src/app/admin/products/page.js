@@ -265,7 +265,7 @@ export default function ProductTable() {
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
           <h1 className="text-gray-600 font-bold">Products</h1>
             <Table>
-              <TableHeader>
+              <TableHeader className="sticky top-0 bg-white z-10">
                 <TableRow>
                   <TableHead>Product Code</TableHead>
                   <TableHead>Date Added</TableHead>

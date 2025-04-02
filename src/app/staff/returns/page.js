@@ -188,7 +188,7 @@ useEffect(() => {
                     {/* Product items table with scrollable container */}
                     <div className="overflow-x-auto max-h-[60vh] flex-grow">
                       <Table>
-                          <TableHeader>
+                        <TableHeader className="sticky top-0 bg-white z-10">
                             <TableRow>
                               <TableHead>Date</TableHead>
                               <TableHead>Transaction ID</TableHead>

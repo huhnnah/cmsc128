@@ -146,7 +146,7 @@ export default function OrdersPage() {
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
           <h1 className="text-gray-600 font-bold">Customer Orders/Transactions</h1>
             <Table>
-              <TableHeader>
+              <TableHeader className="sticky top-0 bg-white z-10">
                 <TableRow>
                   <TableHead>Date</TableHead>
                   <TableHead>Transaction ID</TableHead>
