@@ -7,6 +7,7 @@ import {
   LogOutIcon,
   TruckIcon,
   Undo2Icon,
+  House
 } from "lucide-react"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -29,6 +30,12 @@ const data = {
   },
 
   navMain: [
+    {
+      title: "Order Dashboard",
+      url: "./OrderDashboard",
+      icon: House,
+      isActive: true,
+    },
     {
       title: "Orders",
       url: "./orders",
