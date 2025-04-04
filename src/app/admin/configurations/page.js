@@ -6,12 +6,7 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Search, FilePen } from "lucide-react";
@@ -176,27 +171,11 @@ export default function ConfigurationsPage() {
                       <div className="space-y-3">
                         <div>
                           <Label className="text-sm">Supplier</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select supplier" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Lazer">Lazer</SelectItem>
-                              <SelectItem value="Mirbros">Mirbros</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="supplier" placeholder="Enter supplier" className="col-span-3" />
                         </div>
                         <div>
                           <Label className="text-sm">Code</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select code" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="188090">188090</SelectItem>
-                              <SelectItem value="188091">188091</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="supplier-code" placeholder="Enter code" className="col-span-3" />
                         </div>
                         <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4">ADD</Button>
                       </div>
@@ -213,27 +192,11 @@ export default function ConfigurationsPage() {
                       <div className="space-y-4">
                         <div>
                           <Label className="text-sm">Brand Name</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select brand" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Brand-X">Brand X</SelectItem>
-                              <SelectItem value="Brand-Y">Brand Y</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="brand" placeholder="Enter brand" className="col-span-3" />
                         </div>
                         <div>
                           <Label className="text-sm">Code</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select code" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="188090">188090</SelectItem>
-                              <SelectItem value="188091">188091</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="brand-code" placeholder="Enter code" className="col-span-3" />
                         </div>
                         <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4">ADD</Button>
                       </div>
@@ -250,27 +213,11 @@ export default function ConfigurationsPage() {
                       <div className="space-y-4">
                         <div>
                           <Label className="text-sm">Category Name</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Category-1">Category 1</SelectItem>
-                              <SelectItem value="Category-2">Category 2</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="category" placeholder="Enter category" className="col-span-3" />
                         </div>
                         <div>
                           <Label className="text-sm">Code</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select code" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="188090">188090</SelectItem>
-                              <SelectItem value="188091">188091</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="category-code" placeholder="Enter code" className="col-span-3" />
                         </div>
                         <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4">ADD</Button>
                       </div>
@@ -287,29 +234,11 @@ export default function ConfigurationsPage() {
                       <div className="space-y-4">
                         <div>
                           <Label className="text-sm">Product Status</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select product status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Active">Active</SelectItem>
-                              <SelectItem value="Discontinued">Discontinued</SelectItem>
-                              <SelectItem value="Out-of-Stock">Out of Stock</SelectItem>
-                              <SelectItem value="Low-Stock">Low Stock</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="product-status" placeholder="Enter product status" className="col-span-3" />
                         </div>
                         <div>
                           <Label className="text-sm">Code</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select code" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="188090">188090</SelectItem>
-                              <SelectItem value="188091">188091</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="product-status-code" placeholder="Enter code" className="col-span-3" />
                         </div>
                         <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4">ADD</Button>
                       </div>
@@ -326,28 +255,11 @@ export default function ConfigurationsPage() {
                       <div className="space-y-4">
                         <div>
                           <Label className="text-sm">Payment Type</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select payment type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="One-time">One time, Full</SelectItem>
-                              <SelectItem value="1-month">1 month installment</SelectItem>
-                              <SelectItem value="2-months">2 months installment</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="payment-type" placeholder="Enter payment type" className="col-span-3" />
                         </div>
                         <div>
                           <Label className="text-sm">Code</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select code" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="188090">188090</SelectItem>
-                              <SelectItem value="188091">188091</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="payment-type-code" placeholder="Enter code" className="col-span-3" />
                         </div>
                         <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4">ADD</Button>
                       </div>
