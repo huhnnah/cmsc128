@@ -52,7 +52,7 @@ const data = {
     },
     {
       title: "Deleted Transactions",
-      url: "./void",
+      url: "./deleted",
       icon: CircleXIcon,
     }
   ]
