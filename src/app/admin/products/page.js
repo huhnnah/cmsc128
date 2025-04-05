@@ -15,7 +15,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 
 
 // Sample product data
-const products = [
+const product = [
   { productCode: "188090", dateAdded: "11/12/22", supplier: "Lazer", brand: "Cort", category: "Guitar", product: "AD W/ W Case", quantity: 2, price: "₱15,995", sellingprice:"1", status: "Active" },
   { productCode: "188091", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Maple Snare Drum", quantity: 1, price: "₱4,500", sellingprice:"1", status: "Active" },
   { productCode: "188092", dateAdded: "11/12/22", supplier: "Lazer", brand: "Lazer", category: "Drum", product: "Cymbal Straight Stand", quantity: 3, price: "₱2,395", sellingprice:"1", status: "Active" },
@@ -43,6 +43,41 @@ export default function ProductTable() {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
+
+  const getFilteredTransactions = () => {
+    let sortedTransactions = [...product];
+    if (!selectedFilter || !selectedSubFilter) return sortedTransactions;
+
+    if (selectedFilter === "Supplier") {
+      sortedTransactions = sortedTransactions.filter((item) => item.supplier === selectedSubFilter);
+    }
+  
+    if (selectedFilter === "Brand") {
+      sortedTransactions = sortedTransactions.filter((item) => item.brand === selectedSubFilter);
+    }
+
+    if (selectedFilter === "Product Status") {
+      sortedTransactions = sortedTransactions.filter((item) => item.status === selectedSubFilter);
+    }
+
+    if (selectedFilter === "Product Name") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.product.localeCompare(b.product)
+          : b.product.localeCompare(a.product)
+      );
+    }
+
+    if (selectedFilter === "Price") {
+      const getPrice = (price) => parseFloat(price.replace(/[^\d.]/g, ""));
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Low to High"
+          ? getPrice(a.price) - getPrice(b.price)
+          : getPrice(b.price) - getPrice(a.price)
+      );
+    }
+    return sortedTransactions;
+  };  
 
   return (
     <SidebarProvider>
@@ -95,7 +130,6 @@ export default function ProductTable() {
                     </DropdownMenuSub>
                     
                     <DropdownMenuSub>
-
                     <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
                         <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Ascending")}>
@@ -136,6 +170,13 @@ export default function ProductTable() {
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
+
+                    <DropdownMenuItem 
+                      onClick={() => handleFilterSelect(null, null)} 
+                      className="text-red-500 font-medium"
+                      >
+                        Reset Filters
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -282,7 +323,7 @@ export default function ProductTable() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {products.map((product) => (
+                {getFilteredTransactions().map((product) => (
                   <TableRow key={product.productCode} className={getStatusColor(product.status)}>
                     <TableCell>{product.productCode}</TableCell>
                     <TableCell>{product.dateAdded}</TableCell>

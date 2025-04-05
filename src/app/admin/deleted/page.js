@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { AppSidebar } from "@/components/admin-sidebar"
-import { SidebarProvider} from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, ListFilter, Download, Trash2, Ellipsis, RotateCcw } from "lucide-react"
@@ -57,6 +57,39 @@ export default function DeletedPage() {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
+
+  const getFilteredTransactions = () => {
+    let sortedTransactions = [...transactions];
+  
+    if (!selectedFilter || !selectedSubFilter) return sortedTransactions;
+  
+    if (selectedFilter === "Receipt Number") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.receiptNum.localeCompare(b.receiptNum)
+          : b.receiptNum.localeCompare(a.receiptNum)
+      );
+    }
+
+    if (selectedFilter === "Product Name") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.product.localeCompare(b.product)
+          : b.product.localeCompare(a.product)
+      );
+    }
+  
+    if (selectedFilter === "Price") {
+      const getPrice = (totalPrice) => parseFloat(totalPrice.replace(/[^\d.]/g, ""));
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Low to High"
+          ? getPrice(a.totalPrice) - getPrice(b.totalPrice)
+          : getPrice(b.totalPrice) - getPrice(a.totalPrice)
+      );
+    }
+    return sortedTransactions;
+  };  
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -74,69 +107,68 @@ export default function DeletedPage() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                     {/* Filter button trigger */}
-                    <Button variant="outline" className="flex items-center space-x-2">
-                      <ListFilter className="w-4 h-4" />
-                      <span>Filter</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    {/* Filter by Receipt Number */}
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger>Receipt Number</DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => handleFilterSelect("Receipt Number", "Ascending")}>
-                          Ascending
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleFilterSelect("Receipt Number", "Descending")}>
-                          Descending
-                        </DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-                    
-                    {/* Filter by Product Name */}
-                    <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Ascending")}>
-                          Ascending
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Descending")}>
-                          Descending
-                        </DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex items-center space-x-2">
+                    <ListFilter className="w-4 h-4" />
+                    <span>Filter</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Receipt Number</DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem onClick={() => handleFilterSelect("Receipt Number", "Ascending")}>
+                        Ascending
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleFilterSelect("Receipt Number", "Descending")}>
+                        Descending
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
 
-                    {/* Filter by Receipt Number */}
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "Low to High")}>
-                          Low to High
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleFilterSelect("Price", "High to Low")}>
-                          High to Low
-                        </DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Ascending")}>
+                        Ascending
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleFilterSelect("Product Name", "Descending")}>
+                        Descending
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem onClick={() => handleFilterSelect("Price", "Low to High")}>
+                        Low to High
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleFilterSelect("Price", "High to Low")}>
+                        High to Low
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuItem 
+                    onClick={() => handleFilterSelect(null, null)} 
+                    className="text-red-500 font-medium"
+                    >
+                    Reset Filters
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
             <div className="flex space-x-2">
-            <Button className="bg-blue-400 text-white">
-                <Download className="w-4 h-4"/>
+              <Button className="bg-blue-400 text-white">
+                <Download className="w-4 h-4" />
               </Button>
             </div>
           </div>
 
-
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
-          {/* Deleted Transactions Table */}
-          <h1 className="text-gray-600 font-bold">Deleted Transactions</h1>
+            <h1 className="text-gray-600 font-bold">Deleted Transactions</h1>
             <Table>
               <TableHeader className="sticky top-0 bg-white z-10">
                 <TableRow>
@@ -150,130 +182,128 @@ export default function DeletedPage() {
                   <TableHead>Retrieve/Delete</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>             
-              {/* Loop through and display each deleted transaction */}
-              {transactions.map((transaction) => {
+              <TableBody>
+                {getFilteredTransactions().map((transaction) => {
                   const product = products.find((p) => p.productCode === transaction.productCode) || {};
                   const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
                   return (
-                  <TableRow key={transaction.transactionID}>
-                    <TableCell>{transaction.dateAdded}</TableCell>
-                    <TableCell>{transaction.transactionID}</TableCell>
-                    <TableCell>{transaction.productCode}</TableCell>
-                    <TableCell>{transaction.receiptNum}</TableCell>
-                    <TableCell>{transaction.product}</TableCell>
-                    <TableCell>{transaction.totalPrice}</TableCell>
-                    {/* Details toggle button with modal pop-up */}              
-                    <TableCell>              
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
-                            <Ellipsis size={16} />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-3xl p-6">
-                        <DialogHeader>
-                            <DialogTitle>Transaction Details</DialogTitle>
-                            <DialogClose />
-                          </DialogHeader>
-                          {products && deliveries ? (
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                                <TableHead>Date</TableHead>
-                                <TableHead>Product Code</TableHead>
-                                <TableHead>Supplier</TableHead>
-                                <TableHead>Brand</TableHead>
-                                <TableHead>Category</TableHead>
-                                <TableHead>Product</TableHead>
-                                <TableHead>Quantity</TableHead>
-                                <TableHead>Total</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell>{transaction.dateAdded}</TableCell>
-                                <TableCell>{transaction.productCode}</TableCell>
-                                <TableCell>{deliveries.supplier}</TableCell>
-                                <TableCell>{product.brand}</TableCell>
-                                <TableCell>{product.category}</TableCell>
-                                <TableCell>{transaction.product}</TableCell>
-                                <TableCell>{product.quantity}</TableCell>
-                                <TableCell>{transaction.totalPrice}</TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                          ) : (
-                            <p className="text-gray-500">Product details not found.</p>
-                          )}
-                        </DialogContent>
-                      </Dialog>
-                    </TableCell>
-                    {/* For retrieving transactions */}
-                    <TableCell className="flex items-center">           
-                      <Dialog>
-                        <DialogTrigger asChild> 
-                          <span className="cursor-pointer text-gray-500 hover:text-blue-600">
-                            <RotateCcw size={16} />
-                          </span>
-                        </DialogTrigger> 
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you sure you want to retrieve this transaction?</DialogTitle>
-                            <DialogDescription>
-                              This action will restore the transaction and update the sales report.
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="flex justify-end gap-2 mt-4">
-                            <Button 
-                              className="bg-blue-400 text-white hover:bg-blue-700"
-                              onClick={() => handleRetrieve(transaction.transactionID)}
-                            >
-                              Confirm
+                    <TableRow key={transaction.transactionID}>
+                      <TableCell>{transaction.dateAdded}</TableCell>
+                      <TableCell>{transaction.transactionID}</TableCell>
+                      <TableCell>{transaction.productCode}</TableCell>
+                      <TableCell>{transaction.receiptNum}</TableCell>
+                      <TableCell>{transaction.product}</TableCell>
+                      <TableCell>{transaction.totalPrice}</TableCell>
+                      <TableCell>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
+                              <Ellipsis size={16} />
                             </Button>
-                            <DialogClose asChild>
-                              <Button variant="outline">Cancel</Button>
-                            </DialogClose>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                      {/* For deleting transactions */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
-                        <Trash2 size={16} />
-                      </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-3xl p-7 text-gray-700">
-                        <DialogHeader>
-                            <DialogTitle>
-                              <span className="text-lg text-red-900">Delete Transaction</span>{" "}
-                              <span className="text-lg text-gray-400 font-normal italic">{transaction.transactionID}</span></DialogTitle>
-                            <DialogClose />
-                          </DialogHeader>
-                          <p className='text-sm text-gray-800 mt-2 pl-4'> Warning: This action will permanently remove the transaction from your records. Enter the admin password to continue. </p>
-                          <div className="flex items-center gap-4 mt-4 pl-10">          
-                            <div className="flex-1">
-                              <label htmlFor={`password-${transaction.transactionID}`} className="text-base font-medium text-gray-700 block mb-2">
-                                Admin Password
-                              </label>
-                              <Input type="password" id={`password-${transaction.transactionID}`} required
-                                placeholder="Enter valid password"  className="w-full" 
-                              />
+                          </DialogTrigger>
+                          <DialogContent className="max-w-3xl p-6">
+                            <DialogHeader>
+                              <DialogTitle>Transaction Details</DialogTitle>
+                              <DialogClose />
+                            </DialogHeader>
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Date</TableHead>
+                                  <TableHead>Product Code</TableHead>
+                                  <TableHead>Supplier</TableHead>
+                                  <TableHead>Brand</TableHead>
+                                  <TableHead>Category</TableHead>
+                                  <TableHead>Product</TableHead>
+                                  <TableHead>Quantity</TableHead>
+                                  <TableHead>Total</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>{transaction.dateAdded}</TableCell>
+                                  <TableCell>{transaction.productCode}</TableCell>
+                                  <TableCell>{deliveries.supplier}</TableCell>
+                                  <TableCell>{product.brand}</TableCell>
+                                  <TableCell>{product.category}</TableCell>
+                                  <TableCell>{transaction.product}</TableCell>
+                                  <TableCell>{product.quantity}</TableCell>
+                                  <TableCell>{transaction.totalPrice}</TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </DialogContent>
+                        </Dialog>
+                      </TableCell>
+                      <TableCell className="flex items-center">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <span className="cursor-pointer text-gray-500 hover:text-blue-600">
+                              <RotateCcw size={16} />
+                            </span>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Are you sure you want to retrieve this transaction?</DialogTitle>
+                              <DialogDescription>
+                                This action will restore the transaction and update the sales report.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="flex justify-end gap-2 mt-4">
+                              <Button
+                                className="bg-blue-400 text-white hover:bg-blue-700"
+                                onClick={() => handleRetrieve(transaction.transactionID)}
+                              >
+                                Confirm
+                              </Button>
+                              <DialogClose asChild>
+                                <Button variant="outline">Cancel</Button>
+                              </DialogClose>
                             </div>
-          
-                            <Button 
-                              className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
-                              onClick={() => handleDelete(transaction.transactionID, 
-                                document.getElementById(`password-${transaction.transactionID}`).value)}
-                            >
-                              DELETE TRANSACTION
+                          </DialogContent>
+                        </Dialog>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
+                              <Trash2 size={16} />
                             </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                    </TableCell>
-                  </TableRow>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-3xl p-7 text-gray-700">
+                            <DialogHeader>
+                              <DialogTitle>
+                                <span className="text-lg text-red-900">Delete Transaction</span>{" "}
+                                <span className="text-lg text-gray-400 font-normal italic">{transaction.transactionID}</span>
+                              </DialogTitle>
+                              <DialogClose />
+                            </DialogHeader>
+                            <p className='text-sm text-gray-800 mt-2 pl-4'>
+                              Warning: This action will permanently remove the transaction from your records. Enter the admin password to continue.
+                            </p>
+                            <div className="flex items-center gap-4 mt-4 pl-10">
+                              <div className="flex-1">
+                                <label htmlFor={`password-${transaction.transactionID}`} className="text-base font-medium text-gray-700 block mb-2">
+                                  Admin Password
+                                </label>
+                                <Input
+                                  type="password"
+                                  id={`password-${transaction.transactionID}`}
+                                  required
+                                  placeholder="Enter valid password"
+                                  className="w-full"
+                                />
+                              </div>
+                              <Button
+                                className="bg-red-900 hover:bg-red-950 text-white uppercase text-sm font-medium whitespace-nowrap mt-7"
+                                onClick={() => handleDelete(transaction.transactionID,
+                                  document.getElementById(`password-${transaction.transactionID}`).value)}
+                              >
+                                DELETE TRANSACTION
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
               </TableBody>

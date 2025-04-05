@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
@@ -40,11 +41,42 @@ const deliveryProducts = {
 
 export default function DeliveriesPage() {
   const router = useRouter(); 
-  
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedSubFilter, setSelectedSubFilter] = useState(null);
+
   const handleFilterSelect = (filter, subFilter = null) => {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
+
+  const getFilteredTransactions = () => {
+    let sortedTransactions = [...delivery];
+  
+    if (!selectedFilter || !selectedSubFilter) return sortedTransactions;
+  
+    if (selectedFilter === "Delivery Number") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.deliveryNum.localeCompare(b.deliveryNum)
+          : b.deliveryNum.localeCompare(a.deliveryNum)
+      );
+    }
+  
+    if (selectedFilter === "Supplier") {
+      sortedTransactions = sortedTransactions.filter((item) => item.supplier === selectedSubFilter);
+    }
+  
+    if (selectedFilter === "Price") {
+      sortedTransactions.sort((a, b) => {
+        const getPrice = (str) => parseFloat(str.replace(/[^\d.]/g, ""));
+        return selectedSubFilter === "Low to High"
+          ? getPrice(a.totalCost) - getPrice(b.totalCost)
+          : getPrice(b.totalCost) - getPrice(a.totalCost);
+      });
+    }
+  
+    return sortedTransactions;
+  };  
 
   return (
     <SidebarProvider>
@@ -114,6 +146,13 @@ export default function DeliveriesPage() {
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
+
+                    <DropdownMenuItem 
+                      onClick={() => handleFilterSelect(null, null)} 
+                      className="text-red-500 font-medium"
+                      >
+                        Reset Filters
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -142,7 +181,7 @@ export default function DeliveriesPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {delivery.map((d) => (
+              {getFilteredTransactions().map((d) => (
                   <TableRow key={d.deliveryNum}>
                     <TableCell>{d.dateAdded}</TableCell>
                     <TableCell>{d.deliveryNum}</TableCell>

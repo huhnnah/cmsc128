@@ -55,13 +55,46 @@ export default function DiscountsPage() {
     return total + amount;
   }, 0);
 
-    const [selectedFilter, setSelectedFilter] = useState(null);
-    const [selectedSubFilter, setSelectedSubFilter] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedSubFilter, setSelectedSubFilter] = useState(null);
   
-    const handleFilterSelect = (filter, subFilter = null) => {
-      setSelectedFilter(filter);
-      setSelectedSubFilter(subFilter);
-    };
+  const handleFilterSelect = (filter, subFilter = null) => {
+    setSelectedFilter(filter);
+    setSelectedSubFilter(subFilter);
+  };
+
+  const getFilteredTransactions = () => {
+    let sortedTransactions = [...transactions];
+  
+    if (!selectedFilter || !selectedSubFilter) return sortedTransactions;
+  
+    if (selectedFilter === "Receipt Number") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.receiptNum.localeCompare(b.receiptNum)
+          : b.receiptNum.localeCompare(a.receiptNum)
+      );
+    }
+  
+    if (selectedFilter === "Product Name") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.product.localeCompare(b.product)
+          : b.product.localeCompare(a.product)
+      );
+    }
+  
+    if (selectedFilter === "Price") {
+      const getPrice = (price) => parseFloat(price.replace(/[^\d.]/g, ""));
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Low to High"
+          ? getPrice(a.discountedPrice) - getPrice(b.discountedPrice)
+          : getPrice(b.discountedPrice) - getPrice(a.discountedPrice)
+      );
+    }
+  
+    return sortedTransactions;
+  };  
 
   return (
     <SidebarProvider>
@@ -124,6 +157,13 @@ export default function DiscountsPage() {
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
+    
+                    <DropdownMenuItem 
+                      onClick={() => handleFilterSelect(null, null)} 
+                      className="text-red-500 font-medium"
+                      >
+                        Reset Filters
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -150,7 +190,7 @@ export default function DiscountsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-              {transactions.map((transaction) => {
+              {getFilteredTransactions().map((transaction) => {
                   const product = products.find((p) => p.productCode === transaction.productCode) || {};
                   const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
                   return (
