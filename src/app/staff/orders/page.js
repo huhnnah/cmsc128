@@ -56,10 +56,48 @@ export default function OrdersPage() {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [selectedSubFilter, setSelectedSubFilter] = useState(null);
 
+  // Function to handle filter selection
   const handleFilterSelect = (filter, subFilter = null) => {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
+
+  // Sorting logic based on selected filter and sub-filter
+  const getFilteredTransactions = () => {
+    let sortedTransactions = [...transactions];
+
+    if (!selectedFilter || !selectedSubFilter) return sortedTransactions;
+
+    if (selectedFilter === "Transaction Type") {
+      sortedTransactions = sortedTransactions.filter((item) => item.transactionType === selectedSubFilter);
+    }
+
+    if (selectedFilter === "Receipt Number") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.receiptNum.localeCompare(b.receiptNum)
+          : b.receiptNum.localeCompare(a.receiptNum)
+      );
+    }
+    if (selectedFilter === "Product Name") {
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Ascending"
+          ? a.product.localeCompare(b.product)
+          : b.product.localeCompare(a.product)
+      );
+    }
+  
+    if (selectedFilter === "Price") {
+      const getPrice = (totalPrice) => parseFloat(totalPrice.replace(/[^\d.]/g, ""));
+      sortedTransactions.sort((a, b) =>
+        selectedSubFilter === "Low to High"
+          ? getPrice(a.totalPrice) - getPrice(b.totalPrice)
+          : getPrice(b.totalPrice) - getPrice(a.totalPrice)
+      );
+    }
+    return sortedTransactions;
+  };
+  
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -67,6 +105,8 @@ export default function OrdersPage() {
         <div className="flex-1 p-4 flex flex-col w-full">
           <div className="flex items-center justify-between mb-4 bg-white p-2 rounded-lg">
             <div className="flex items-center space-x-2">
+
+              {/* Search Bar: Allows users to search for transactions by ID, product, etc. */}
               <div className="relative w-80">
                 <input
                   type="text"
@@ -77,6 +117,10 @@ export default function OrdersPage() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
+              {/* 
+                  FILTER DROPDOWN: Allows users to filter deliveries by Delivery Number (ascending/descending), 
+                  Supplier (e.g., Cort, Lazer), or Total Cost (low to high, high to low)
+                */}
               <div className="flex items-center space-x-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -86,6 +130,8 @@ export default function OrdersPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start">
+
+                    {/* Filter by Transaction Type */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Transaction Type</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -98,6 +144,7 @@ export default function OrdersPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     
+                    {/* Filter by Receipt Number */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Receipt Number</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -110,6 +157,7 @@ export default function OrdersPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     
+                    {/* Filter by Product Name */}
                     <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -122,6 +170,7 @@ export default function OrdersPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Filter by Price */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -133,16 +182,28 @@ export default function OrdersPage() {
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
+                  
+                    {/* Reset Filters */}
+                    <DropdownMenuItem 
+                      onClick={() => handleFilterSelect(null, null)} 
+                      className="text-red-500 font-medium"
+                      >
+                        Reset Filters
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
             </div>
+
+            {/* Download Button*/}
             <div className="flex space-x-2">
             <Button className="bg-blue-400 text-white">
                 <Download className="w-4 h-4"/>
               </Button>
             </div>
           </div>
+
+          {/* Orders Transactions Table */}
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
           <h1 className="text-gray-600 font-bold">Customer Orders/Transactions</h1>
             <Table>
@@ -159,7 +220,9 @@ export default function OrdersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-              {transactions.map((transaction) => {
+
+              {/* Map through transactions and display them in the table */}
+              {getFilteredTransactions().map((transaction) => {
                   const product = products.find((p) => p.productCode === transaction.productCode) || {};
                   const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
                   return (
@@ -171,7 +234,8 @@ export default function OrdersPage() {
                     <TableCell>{transaction.receiptNum}</TableCell>
                     <TableCell>{transaction.product}</TableCell>
                     <TableCell>{transaction.totalPrice}</TableCell>
-                {/*Details toggle button with modal pop-up */}              
+               
+                     {/* Details Button: Opens a dialog with transaction details */}            
                     <TableCell className="flex space-x-2">              
                       <Dialog>
                         <DialogTrigger asChild>
@@ -215,8 +279,9 @@ export default function OrdersPage() {
                             <p className="text-gray-500">Product details not found.</p>
                           )}
                         </DialogContent>
-                      </Dialog>                     
-                      {/* For deleting transactions */}
+                      </Dialog>       
+                                    
+                      {/* Delete Button: Opens a dialog to confirm deletion of the transaction */}
                       <Dialog>
                         <DialogTrigger asChild>
                       <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">

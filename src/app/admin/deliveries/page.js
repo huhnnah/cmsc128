@@ -44,11 +44,13 @@ export default function DeliveriesPage() {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [selectedSubFilter, setSelectedSubFilter] = useState(null);
 
+  // Function to handle filter selection
   const handleFilterSelect = (filter, subFilter = null) => {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
 
+  // Sorting logic based on selected filter and sub-filter
   const getFilteredTransactions = () => {
     let sortedTransactions = [...delivery];
   
