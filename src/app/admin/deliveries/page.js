@@ -1,17 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { Search, ListFilter, Trash2, Ellipsis, PackagePlus } from "lucide-react";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Search, ListFilter, Trash2, Ellipsis, PackagePlus } from "lucide-react"
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu";
+
+// Sample data for deliveries
+const delivery = [
+  { dateAdded: "11/12/22", deliveryNum: "12345", supplier: "Lazer", totalCost: "₱31,990" },
+  { dateAdded: "11/12/22", deliveryNum: "12346", supplier: "Lazer", totalCost: "₱4,500" },
+  { dateAdded: "11/12/22", deliveryNum: "12347", supplier: "Lazer", totalCost: "₱1,995" },
+  { dateAdded: "11/12/22", deliveryNum: "12348", supplier: "Mirbros", totalCost: "₱29,995" },
+  { dateAdded: "11/12/22", deliveryNum: "12349", supplier: "Mirbros", totalCost: "₱125" },
+  { dateAdded: "11/12/22", deliveryNum: "12350", supplier: "Mirbros", totalCost: "₱2,595" },
+  { dateAdded: "11/12/22", deliveryNum: "12351", supplier: "Lazer", totalCost: "₱395" },
+  { dateAdded: "11/12/22", deliveryNum: "12352", supplier: "Lazer", totalCost: "₱295" },
+  { dateAdded: "11/12/22", deliveryNum: "12353", supplier: "Lazer", totalCost: "₱15,995" },
+];
 
 // Sample data mapping for deliveries with their associated products
 const deliveryProducts = {
@@ -26,29 +38,14 @@ const deliveryProducts = {
   "12353": [{ productCode: "188098", supplier: "Lazer", brand: "Cort", product: "Acoustic Guitar", quantity: "1 pc", unitPrice: "15,995", total: "15,995" }]
 };
 
-// sample data for deliveries
-const delivery = [
-  { dateAdded: "11/12/22", deliveryNum: "12345", supplier: "Lazer", totalCost: "₱31,990" },
-  { dateAdded: "11/12/22", deliveryNum: "12346", supplier: "Lazer", totalCost: "₱4,500" },
-  { dateAdded: "11/12/22", deliveryNum: "12347", supplier: "Lazer", totalCost: "₱1,995" },
-  { dateAdded: "11/12/22", deliveryNum: "12348", supplier: "Mirbros", totalCost: "₱29,995" },
-  { dateAdded: "11/12/22", deliveryNum: "12349", supplier: "Mirbros", totalCost: "₱125" },
-  { dateAdded: "11/12/22", deliveryNum: "12350", supplier: "Mirbros", totalCost: "₱2,595" },
-  { dateAdded: "11/12/22", deliveryNum: "12351", supplier: "Lazer", totalCost: "₱395" },
-  { dateAdded: "11/12/22", deliveryNum: "12352", supplier: "Lazer", totalCost: "₱295" },
-  { dateAdded: "11/12/22", deliveryNum: "12353", supplier: "Lazer", totalCost: "₱15,995" },
-];
-
 export default function DeliveriesPage() {
   const router = useRouter(); 
   
-  const [selectedFilter, setSelectedFilter] = useState(null);
-  const [selectedSubFilter, setSelectedSubFilter] = useState(null);
-
   const handleFilterSelect = (filter, subFilter = null) => {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
@@ -67,6 +64,10 @@ export default function DeliveriesPage() {
                 </div>
               </div>
               <div className="flex items-center space-x-2">
+                {/* 
+                  FILTER DROPDOWN: Allows users to filter deliveries by Delivery Number (ascending/descending), 
+                  Supplier (e.g., Cort, Lazer), or Total Cost (low to high, high to low)
+                */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex items-center space-x-2">
@@ -75,7 +76,7 @@ export default function DeliveriesPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start">
-
+                    {/* Filter by Delivery Number */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Delivery Number</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -88,6 +89,7 @@ export default function DeliveriesPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Filter by Supplier */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Supplier</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -100,6 +102,7 @@ export default function DeliveriesPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Filter by Total Cost */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger> Total Cost</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -115,6 +118,8 @@ export default function DeliveriesPage() {
                 </DropdownMenu>
               </div>
             </div>
+            
+            {/* Button to navigate to Add Delivery form page */}
             <div className="flex space-x-2">
               <Button className="bg-blue-400 text-white" onClick={() => router.push("./deliveries-add-delivery")}>
                 <PackagePlus size={16} />
@@ -122,7 +127,9 @@ export default function DeliveriesPage() {
               </Button>
             </div>
           </div>
+
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
+          {/* Deliveries Table */}
           <h1 className="text-gray-600 font-bold">Deliveries</h1>
             <Table>
               <TableHeader className="sticky top-0 bg-white z-10">
@@ -142,6 +149,7 @@ export default function DeliveriesPage() {
                     <TableCell>{d.supplier}</TableCell>
                     <TableCell>{d.totalCost}</TableCell>
                     <TableCell className="flex space-x-2">
+                      {/* Delivery Details dialog */}
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600">
@@ -154,7 +162,7 @@ export default function DeliveriesPage() {
                             <DialogClose />
                           </DialogHeader>
                           
-                          {/* Main content layout within dialog */}
+                          {/* Main content layout within Delivery Details dialog */}
                           <div className="flex flex-col gap-6">
                             {/* Basic Delivery Info */}
                             <div className="grid grid-cols-2 gap-4">
@@ -166,9 +174,8 @@ export default function DeliveriesPage() {
                                 <label className="text-sm font-medium">Delivery Number</label>
                                 <Input value= {`DR-${d.deliveryNum}`} className="text-center" readOnly />
                               </div>
-                            </div>
-                            
-                            {/* Product items table - showing single product per delivery */}
+                            </div>                            
+                            {/* TOP CONTENT: Product items table - showing single product per delivery */}
                             <div className="w-full">
                              <div className="overflow-x-auto">
                                 <Table>
@@ -198,9 +205,8 @@ export default function DeliveriesPage() {
                                   </TableBody>
                                 </Table>
                               </div>
-                            </div>
-                            
-                            {/* Delivery Payment Details Section */}
+                            </div>                            
+                            {/* BOTTOM CONTENT: Delivery Payment Details Section */}
                             <div className="flex w-full">
                               <h2 className="text-lg text-gray-600 font-medium mt-2 mb-6">Delivery Payment Details</h2>
                               <div className="grid grid-cols-12 gap-4">
@@ -239,7 +245,6 @@ export default function DeliveriesPage() {
                                     </SelectContent>
                                   </Select>
                                 </div>
-
                                 {/* Second row */}
                                 <div className="col-span-3 flex justify-end mt-6">
                                   <Label htmlFor="paymentStatus" className="mb-1 block">Payment Status</Label>
@@ -273,6 +278,7 @@ export default function DeliveriesPage() {
                           </div>
                         </DialogContent>
                       </Dialog>
+
                       {/* For deleting transactions */}
                       <Dialog>
                         <DialogTrigger asChild>

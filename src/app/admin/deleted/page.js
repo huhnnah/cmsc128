@@ -1,29 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState } from "react"
 import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarProvider} from "@/components/ui/sidebar"
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogDescription } from "@/components/ui/dialog";
-import { Search, ListFilter, Download, Trash2, Ellipsis, RotateCcw } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Search, ListFilter, Download, Trash2, Ellipsis, RotateCcw } from "lucide-react"
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogDescription } from "@/components/ui/dialog"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu"
 
-// sample product data
-const products = [
-  { productCode: "188090", brand: "Cort", category: "Guitar", quantity: 2 },
-  { productCode: "188091", brand: "Lazer", category: "Drum", quantity: 1 },
-  { productCode: "188092", brand: "Lazer", category: "Drum", quantity: 3 },
-  { productCode: "188093", brand: "Alice", category: "Violin String", quantity: 0 },
-  { productCode: "188094", brand: "Bee", category: "Harmonica", quantity: 0 },
-  { productCode: "188095", brand: "Cort", category: "Guitar", quantity: 2 },
-  { productCode: "188096", brand: "Cort", category: "Guitar", quantity: 2 },
-  { productCode: "188097", brand: "Lazer", category: "Drum", quantity: 1 },
-  { productCode: "188098", brand: "Lazer", category: "Drum", quantity: 3 },
-];
-
-// sample deliveries data
+// Sample deliveries data
 const delivery = [
   { deliveryNum: "188090", supplier: "Lazer" },
   { deliveryNum: "188091", supplier: "Lazer" },
@@ -36,7 +23,20 @@ const delivery = [
   { deliveryNum: "188098", supplier: "Lazer" },
 ];
 
-// sample transaction data
+// Sample product data
+const products = [
+  { productCode: "188090", brand: "Cort", category: "Guitar", quantity: 2 },
+  { productCode: "188091", brand: "Lazer", category: "Drum", quantity: 1 },
+  { productCode: "188092", brand: "Lazer", category: "Drum", quantity: 3 },
+  { productCode: "188093", brand: "Alice", category: "Violin String", quantity: 0 },
+  { productCode: "188094", brand: "Bee", category: "Harmonica", quantity: 0 },
+  { productCode: "188095", brand: "Cort", category: "Guitar", quantity: 2 },
+  { productCode: "188096", brand: "Cort", category: "Guitar", quantity: 2 },
+  { productCode: "188097", brand: "Lazer", category: "Drum", quantity: 1 },
+  { productCode: "188098", brand: "Lazer", category: "Drum", quantity: 3 },
+];
+
+// Sample transaction data
 const transactions = [
   { dateAdded: "11/12/22", transactionID: "9090", productCode: "188090", receiptNum: "110090", product: "AD W/ W Case", totalPrice: "₱15,995" },
   { dateAdded: "11/12/22", transactionID: "9091", productCode: "188091", receiptNum: "111091",  product: "Maple Snare Drum", totalPrice: "₱4,500"},
@@ -77,12 +77,14 @@ export default function DeletedPage() {
               <div className="flex items-center space-x-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
+                     {/* Filter button trigger */}
                     <Button variant="outline" className="flex items-center space-x-2">
                       <ListFilter className="w-4 h-4" />
                       <span>Filter</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start">
+                    {/* Filter by Receipt Number */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Receipt Number</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -95,6 +97,7 @@ export default function DeletedPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     
+                    {/* Filter by Product Name */}
                     <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -107,6 +110,7 @@ export default function DeletedPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Filter by Receipt Number */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -128,7 +132,10 @@ export default function DeletedPage() {
               </Button>
             </div>
           </div>
+
+
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
+          {/* Deleted Transactions Table */}
           <h1 className="text-gray-600 font-bold">Deleted Transactions</h1>
             <Table>
               <TableHeader className="sticky top-0 bg-white z-10">
@@ -143,7 +150,8 @@ export default function DeletedPage() {
                   <TableHead>Retrieve/Delete</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody>             
+              {/* Loop through and display each deleted transaction */}
               {transactions.map((transaction) => {
                   const product = products.find((p) => p.productCode === transaction.productCode) || {};
                   const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
@@ -155,7 +163,7 @@ export default function DeletedPage() {
                     <TableCell>{transaction.receiptNum}</TableCell>
                     <TableCell>{transaction.product}</TableCell>
                     <TableCell>{transaction.totalPrice}</TableCell>
-                {/*Details toggle button with modal pop-up */}              
+                    {/* Details toggle button with modal pop-up */}              
                     <TableCell>              
                       <Dialog>
                         <DialogTrigger asChild>

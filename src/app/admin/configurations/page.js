@@ -2,15 +2,15 @@
 
 import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Search, FilePen } from "lucide-react"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Search, FilePen } from "lucide-react";
-import { useState } from "react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
+
 
 const supplierData = [
   { id: 1, name: "LAZER", code: "1" },
@@ -23,7 +23,7 @@ export default function ConfigurationsPage() {
   const [searchCategory, setSearchCategory] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   const [searchPaymentType, setSearchPaymentType] = useState("");
-  const [ , setActiveTab] = useState("add-suplier");
+  const [ , setActiveTab] = useState("add-supplier");
 
   const filteredSuppliers = supplierData.filter(supplier =>
     supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -37,6 +37,7 @@ export default function ConfigurationsPage() {
         <div className="flex-1 p-4 flex flex-col w-full">
           <h1 className="text-lg font-medium text-gray-600 mt-4 mb-6">Configurations</h1>
 
+          {/* Tab switch */}
           <Tabs defaultValue="add-supplier" className="w-full mb-4" onValueChange={setActiveTab}>
             <TabsList className="w-full flex justify-start bg-white shadow-md rounded-md px-6 py-6 mb-4">
               <TabsTrigger value="add-supplier" className="data-[state=active]:text-indigo-600 hover:text-black">ADD SUPPLIER</TabsTrigger>
@@ -47,11 +48,13 @@ export default function ConfigurationsPage() {
             </TabsList>
 
             <div className="flex flex-col lg:flex-row gap-6">
-              {/* Left Content */}
+              {/* ------------ Left Panel Content on each Tab Switch ------------ */}
               <div className="w-full lg:w-2/3 flex flex-col">
+              {/* Add Supplier Tab */}
                 <TabsContent value="add-supplier">
                   <Card className="flex flex-col flex-grow">
                     <CardContent className="p-4">
+                      {/* Search filter function */}
                       <div className="relative mb-4">
                         <Search className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                         <Input
@@ -62,6 +65,7 @@ export default function ConfigurationsPage() {
                         />
                       </div>
                       <div className="overflow-x-auto max-h-[60vh]">
+                        {/* Table for Add Supplier Tab */}
                         <Table>
                           <TableBody>
                             {filteredSuppliers.map((supplier) => (
@@ -91,6 +95,7 @@ export default function ConfigurationsPage() {
                   </Card>
                 </TabsContent>
 
+                {/* Add Brand Tab */}
                 <TabsContent value="add-brand">
                   <Card className="flex flex-col flex-grow">
                     <CardContent className="p-4">
@@ -103,11 +108,13 @@ export default function ConfigurationsPage() {
                           onChange={(e) => setSearchBrand(e.target.value)}
                         />
                       </div>
+                      {/* where Table for Add Brand Tab goes */}
                       <div className="text-sm text-gray-500">Brand content here...</div>
                     </CardContent>
                   </Card>
                 </TabsContent>
 
+                {/* Add Category Tab */}
                 <TabsContent value="add-category">
                   <Card className="flex flex-col flex-grow">
                     <CardContent className="p-4">
@@ -120,11 +127,13 @@ export default function ConfigurationsPage() {
                           onChange={(e) => setSearchCategory(e.target.value)}
                         />
                       </div>
+                      {/* where Table for Add Category Tab goes */}                  
                       <div className="text-sm text-gray-500">Category content here...</div>
                     </CardContent>
                   </Card>
                 </TabsContent>
 
+                {/* Add Product Status Tab */}
                 <TabsContent value="add-product-status">
                   <Card className="flex flex-col flex-grow">
                     <CardContent className="p-4">
@@ -137,11 +146,13 @@ export default function ConfigurationsPage() {
                           onChange={(e) => setSearchStatus(e.target.value)}
                         />
                       </div>
+                      {/* where Table for Add Product Status Tab goes */}                      
                       <div className="text-sm text-gray-500">Product status content here...</div>
                     </CardContent>
                   </Card>
                 </TabsContent>
 
+                {/* Add Type of Payment Tab */}    
                 <TabsContent value="add-payment-type">
                   <Card className="flex flex-col flex-grow">
                     <CardContent className="p-4">
@@ -154,14 +165,16 @@ export default function ConfigurationsPage() {
                           onChange={(e) => setSearchPaymentType(e.target.value)}
                         />
                       </div>
+                      {/* where Table for Type of Payment Tab goes */}   
                       <div className="text-sm text-gray-500">Payment type content here...</div>
                     </CardContent>
                   </Card>
                 </TabsContent>
               </div>
 
-              {/* Right Content */}
+              {/* ------------ Right Panel Form on each Tab Switch ------------ */}
               <div className="w-full lg:w-1/3 h-fit">
+              {/* Card Modal for Supplier */}
                 <TabsContent value="add-supplier">
                   <Card>
                     <CardHeader className="pb-0">
@@ -182,7 +195,8 @@ export default function ConfigurationsPage() {
                     </CardContent>
                   </Card>
                 </TabsContent>
-
+                
+                {/* Card Modal for Brand */}
                 <TabsContent value="add-brand">
                   <Card>
                     <CardHeader className="pb-0">
@@ -204,6 +218,7 @@ export default function ConfigurationsPage() {
                   </Card>
                 </TabsContent>
 
+                {/* Card Modal for Category */}                
                 <TabsContent value="add-category">
                   <Card>
                     <CardHeader className="pb-0">
@@ -225,6 +240,7 @@ export default function ConfigurationsPage() {
                   </Card>
                 </TabsContent>
 
+                {/* Card Modal for Product Status */}
                 <TabsContent value="add-product-status">
                   <Card>
                     <CardHeader className="pb-0">
@@ -246,6 +262,7 @@ export default function ConfigurationsPage() {
                   </Card>
                 </TabsContent>
 
+                {/* Card Modal for Payment Type */}
                 <TabsContent value="add-payment-type">
                   <Card>
                     <CardHeader className="pb-0">
