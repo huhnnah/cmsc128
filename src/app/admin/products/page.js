@@ -31,7 +31,8 @@ export default function ProductTable() {
   const [isSheetOpen, setSheetOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const openEditSheet = (product) => {
+  // This function opens the edit sheet and sets the selected product
+  const openEditSheet = (product) => { 
     setSelectedProduct(product);
     setSheetOpen(true);
   };
@@ -39,11 +40,13 @@ export default function ProductTable() {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [selectedSubFilter, setSelectedSubFilter] = useState(null);
 
+  // Function to handle filter selection
   const handleFilterSelect = (filter, subFilter = null) => {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
 
+  // Sorting logic based on selected filter and sub-filter
   const getFilteredTransactions = () => {
     let sortedTransactions = [...product];
     if (!selectedFilter || !selectedSubFilter) return sortedTransactions;
@@ -86,6 +89,8 @@ export default function ProductTable() {
         <div className="flex-1 p-4 flex flex-col w-full">
           <div className="flex items-center justify-between mb-4 bg-white p-2 rounded-lg">
             <div className="flex items-center space-x-2">
+
+              {/* Search Bar: Allows users to search for transactions by ID, product, etc. */}
               <div className="relative w-80">
                 <input
                   type="text"
@@ -96,6 +101,11 @@ export default function ProductTable() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
+
+               {/* 
+                  FILTER DROPDOWN: Allows users to filter deliveries by Delivery Number (ascending/descending), 
+                  Supplier (e.g., Cort, Lazer), or Total Cost (low to high, high to low)
+                */}
               <div className="flex items-center space-x-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -105,6 +115,8 @@ export default function ProductTable() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start">
+
+                    {/* Filter by Supplier */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Supplier</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -117,6 +129,7 @@ export default function ProductTable() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     
+                    {/* Filter by Brand */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Brand</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -129,6 +142,7 @@ export default function ProductTable() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     
+                    {/* Filter by Product Name */}
                     <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -141,6 +155,7 @@ export default function ProductTable() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Filter by Price */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -153,6 +168,7 @@ export default function ProductTable() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     
+                    {/* Filter by Product Status */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Product Status</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -171,6 +187,7 @@ export default function ProductTable() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Reset Filters */}
                     <DropdownMenuItem 
                       onClick={() => handleFilterSelect(null, null)} 
                       className="text-red-500 font-medium"
@@ -181,6 +198,8 @@ export default function ProductTable() {
                 </DropdownMenu>
               </div>
             </div>
+
+            {/* Add Product Button: Opens a sheet to add a new product */}
             <div className="flex space-x-2">
               <Sheet>
                 <SheetTrigger asChild>
@@ -190,6 +209,8 @@ export default function ProductTable() {
                   <SheetHeader>
                     <SheetTitle className="text-blue-400 text-xl font-bold">Add New Product</SheetTitle>
                   </SheetHeader>
+
+                  {/* Form fields for adding a new product */}
                   <div className="overflow-y-auto flex flex-col space-y-4">
                     <Label className>Product Code</Label>
                     <Input placeholder="Enter product code" />
@@ -254,11 +275,14 @@ export default function ProductTable() {
                         <SelectItem value="Discontinued">Discontinued</SelectItem>
                       </SelectContent>
                     </Select>
+
+                    {/* Button to submit the new product details */}
                     <Button className="bg-blue-400 text-white w-full mt-4">Add Product</Button>
                   </div>
                 </SheetContent>
               </Sheet>
 
+              {/* Update Price Button: Opens a dialog to update the price of a product */}
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="bg-blue-400 text-white">Update Price</Button>
@@ -268,6 +292,7 @@ export default function ProductTable() {
                     <DialogTitle className="text-blue-400 text-xl font-bold mb-4">Product Price Update</DialogTitle>
                   </DialogHeader>
 
+                  {/* Form fields for updating product price */}
                   <div className="flex flex-col space-y-3">
                     <Label>Product Name</Label>
                     <Input placeholder="Enter product name" />
@@ -283,8 +308,9 @@ export default function ProductTable() {
                       </SelectContent>
                     </Select>
 
+                    {/* Auto-filled fields for product code and price */}
                     <Label>Product Code</Label>
-                    <Input disabled placeholder="Auto-filled" className="bg-gray-300" />
+                    <Input disabled placeholder="Auto-filled" className="bg-gray-300" /> 
 
                     <Label>Price</Label>
                     <Input disabled placeholder="Auto-filled" className="bg-gray-300" />
@@ -293,17 +319,21 @@ export default function ProductTable() {
                     <Input type="text" placeholder="Enter new price" />
                   </div>
 
+                  {/* Footer with update button */}
                   <DialogFooter>
                     <Button className="bg-blue-500 text-white w-full">Update Product Price</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
 
+              {/* Download Button*/}
               <Button className="bg-blue-400 text-white">
                 <Download className="w-4 h-4" />
               </Button>
             </div>
           </div>
+
+          {/* Products Table */}
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
           <h1 className="text-gray-600 font-bold">Products</h1>
             <Table>
@@ -323,6 +353,8 @@ export default function ProductTable() {
                 </TableRow>
               </TableHeader>
               <TableBody>
+
+                {/* Map through the filtered transactions and display them in the table */}
                 {getFilteredTransactions().map((product) => (
                   <TableRow key={product.productCode} className={getStatusColor(product.status)}>
                     <TableCell>{product.productCode}</TableCell>
@@ -336,10 +368,12 @@ export default function ProductTable() {
                     <TableCell>{product.sellingprice}</TableCell>
                     <TableCell className={`font-semibold ${getStatusTextColor(product.status)}`}>{product.status}</TableCell>
                     <TableCell className="flex space-x-2">
+                      {/* Edit Button: Opens the edit sheet with the selected product details */}
                       <Button variant="ghost" size="sm" className="text-gray-500 hover:text-blue-600" onClick={() => openEditSheet(product)}>
                         <FilePen size={16} />
                       </Button>
-                      {/* For deleting transactions */}
+
+                      {/* Delete Button: Opens a dialog to confirm deletion of the product */}
                       <Dialog>
                           <DialogTrigger asChild>
                         <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
@@ -379,82 +413,92 @@ export default function ProductTable() {
               ))}
             </TableBody>
           </Table>
-          <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="right" className="w-[400px] h-full flex flex-col">
-          <SheetHeader>
-            <SheetTitle className="text-blue-400 text-xl font-bold">Edit Product Details</SheetTitle>
-          </SheetHeader>
-          {selectedProduct && (
-            <div className="overflow-y-auto flex flex-col space-y-4">
-              <label className="text-black font-semibold text-sm">Product Code</label>
-              <Input value={selectedProduct.productCode} disabled className="bg-gray-200" />
+          
+          {/* Edit Sheet: Opens when a product is selected for editing */}
+          <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}> 
+            <SheetContent side="right" className="w-[400px] h-full flex flex-col">
+              <SheetHeader>
+                <SheetTitle className="text-blue-400 text-xl font-bold">Edit Product Details</SheetTitle>
+              </SheetHeader>
 
-              <label className="text-black font-semibold text-sm">Date Added</label>
-              <Input value={selectedProduct.dateAdded} disabled className="bg-gray-200" />
+              {/* Form fields for editing product details */}
+              {selectedProduct && (
+                <div className="overflow-y-auto flex flex-col space-y-4">
+                  <label className="text-black font-semibold text-sm">Product Code</label>
+                  {/* Auto-filled field for product code */}
+                  <Input value={selectedProduct.productCode} disabled className="bg-gray-200" /> 
+                  
+                  {/* Auto-filled field for date added */}
+                  <label className="text-black font-semibold text-sm">Date Added</label>
+                  <Input value={selectedProduct.dateAdded} disabled className="bg-gray-200" />
 
-              <label className="text-black font-semibold text-sm">Supplier</label>
-              <Select value={selectedProduct.supplier}>
-                <SelectTrigger>
-                  <SelectValue placeholder={selectedProduct.supplier}/>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Lazer">Lazer</SelectItem>
-                  <SelectItem value="Cort">Cort</SelectItem>
-                </SelectContent>
-              </Select>
+                  {/* Dropdowns for selecting supplier, brand, and category */}
+                  <label className="text-black font-semibold text-sm">Supplier</label>
+                  <Select value={selectedProduct.supplier}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={selectedProduct.supplier}/>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Lazer">Lazer</SelectItem>
+                      <SelectItem value="Cort">Cort</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              <label className="text-black font-semibold text-sm">Brand</label>
-              <Select value={selectedProduct.brand}>
-                <SelectTrigger>
-                  <SelectValue placeholder={selectedProduct.brand}/>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Cort">Cort</SelectItem>
-                  <SelectItem value="Lazer">Lazer</SelectItem>
-                </SelectContent>
-              </Select>
+                  <label className="text-black font-semibold text-sm">Brand</label>
+                  <Select value={selectedProduct.brand}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={selectedProduct.brand}/>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Cort">Cort</SelectItem>
+                      <SelectItem value="Lazer">Lazer</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              <label className="text-black font-semibold text-sm">Category</label>
-              <Select value={selectedProduct.category}>
-                <SelectTrigger>
-                  <SelectValue placeholder={selectedProduct.category} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Guitar">Guitar</SelectItem>
-                  <SelectItem value="Drum">Drum</SelectItem>
-                </SelectContent>
-              </Select>
+                  <label className="text-black font-semibold text-sm">Category</label>
+                  <Select value={selectedProduct.category}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={selectedProduct.category} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Guitar">Guitar</SelectItem>
+                      <SelectItem value="Drum">Drum</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              <label className="text-black font-semibold text-sm">Product Name</label>
-              <Input placeholder={selectedProduct.product} />
+                  {/*Text fields for product name, quantity, price, selling price */}
+                  <label className="text-black font-semibold text-sm">Product Name</label>
+                  <Input placeholder={selectedProduct.product} /> 
 
-              <label className="text-black font-semibold text-sm">Quantity</label>
-              <Input type="number" defaultValue={selectedProduct.quantity} />
+                  <label className="text-black font-semibold text-sm">Quantity</label>
+                  <Input type="number" defaultValue={selectedProduct.quantity} />
 
-              <label className="text-black font-semibold text-sm">Price</label>
-              <Input type="text" defaultValue={selectedProduct.price} />
+                  <label className="text-black font-semibold text-sm">Price</label>
+                  <Input type="text" defaultValue={selectedProduct.price} />
 
-              <label className="text-black font-semibold text-sm">Selling Price</label>
-              <Input type="text" defaultValue={selectedProduct.sellingprice} />
+                  <label className="text-black font-semibold text-sm">Selling Price</label>
+                  <Input type="text" defaultValue={selectedProduct.sellingprice} />
 
-              <label className="text-black font-semibold text-sm">Product Status</label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder={selectedProduct.status} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Active">Active</SelectItem>
-                  <SelectItem value="Out of Stock">Out of Stock</SelectItem>
-                  <SelectItem value="Low Stock">Low Stock</SelectItem>
-                  <SelectItem value="Discontinued">Discontinued</SelectItem>
-                </SelectContent>
-              </Select>
+                  {/* Dropdown for selecting product status */}
+                  <label className="text-black font-semibold text-sm">Product Status</label>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder={selectedProduct.status} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="Out of Stock">Out of Stock</SelectItem>
+                      <SelectItem value="Low Stock">Low Stock</SelectItem>
+                      <SelectItem value="Discontinued">Discontinued</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              <Button className="bg-blue-400 text-white w-full mt-4">Save Edit</Button>
-            </div>
-          )}
-        </SheetContent>
-      </Sheet>
+                  {/* Button to save the edited product details */}
+                  <Button className="bg-blue-400 text-white w-full mt-4">Save Edit</Button>
+                </div>
+              )}
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </div>
@@ -462,6 +506,7 @@ export default function ProductTable() {
   );
 }
 
+{/*Determines the background color of the status based on its value */}
 function getStatusColor(status) {
   switch (status) {
     case "Out of Stock":
@@ -475,6 +520,7 @@ function getStatusColor(status) {
   }
 }
 
+{/*Determines the text color of the status based on its value */}
 function getStatusTextColor(status) {
   switch (status) {
     case "Active":

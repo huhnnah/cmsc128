@@ -50,7 +50,11 @@ const transactions = [
 ];
 
 export default function DiscountsPage() {
-  const totalDiscountedSales = transactions.reduce((total, transaction) => {
+  
+  // Calculate total discounted sales
+  const totalDiscountedSales = transactions.reduce((total, transaction) => { 
+    // Remove "₱" and "," from the price string and convert to float
+    // If parsing fails, default to 0
     const amount = parseFloat(transaction.discountedPrice.replace("₱", "").replace(",", "")) || 0;
     return total + amount;
   }, 0);
@@ -58,11 +62,13 @@ export default function DiscountsPage() {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [selectedSubFilter, setSelectedSubFilter] = useState(null);
   
+  // Function to handle filter selection
   const handleFilterSelect = (filter, subFilter = null) => {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
 
+  // Sorting logic based on selected filter and sub-filter
   const getFilteredTransactions = () => {
     let sortedTransactions = [...transactions];
   
@@ -103,6 +109,7 @@ export default function DiscountsPage() {
         <div className="flex-1 p-4 flex flex-col w-full">
           <div className="flex items-center justify-between mb-4 bg-white p-2 rounded-lg">
             <div className="flex items-center space-x-2">
+              {/* Search Bar: Allows users to search for transactions by ID, product, etc. */}
               <div className="relative w-80">
                 <input
                   type="text"
@@ -114,6 +121,10 @@ export default function DiscountsPage() {
                 </div>
               </div>
               <div className="flex items-center space-x-2">
+                {/* 
+                  FILTER DROPDOWN: Allows users to filter deliveries by Delivery Number (ascending/descending), 
+                  Supplier (e.g., Cort, Lazer), or Total Cost (low to high, high to low)
+                */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex items-center space-x-2">
@@ -122,6 +133,7 @@ export default function DiscountsPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start">
+                    {/* Filter by Receipt Number */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Receipt Number</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -134,6 +146,7 @@ export default function DiscountsPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     
+                    {/* Filter by Product Name */}
                     <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -146,6 +159,7 @@ export default function DiscountsPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Filter by Price */}
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
@@ -157,7 +171,8 @@ export default function DiscountsPage() {
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
-    
+                    
+                    {/* Reset Filters */}
                     <DropdownMenuItem 
                       onClick={() => handleFilterSelect(null, null)} 
                       className="text-red-500 font-medium"
@@ -168,12 +183,15 @@ export default function DiscountsPage() {
                 </DropdownMenu>
               </div>
             </div>
+            {/* Download Button*/}
             <div className="flex space-x-2">
             <Button className="bg-blue-400 text-white">
                 <Download className="w-4 h-4"/>
               </Button>
             </div>
           </div>
+
+          {/* Discounts Transaction Table */}
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
           <h1 className="text-gray-600 font-bold">Discounts</h1>
             <Table>
@@ -190,6 +208,7 @@ export default function DiscountsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
+              {/* Map through transactions and display each transaction in a table row */}
               {getFilteredTransactions().map((transaction) => {
                   const product = products.find((p) => p.productCode === transaction.productCode) || {};
                   const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
@@ -202,7 +221,8 @@ export default function DiscountsPage() {
                     <TableCell>{transaction.product}</TableCell>
                     <TableCell>{transaction.totalPrice}</TableCell>
                     <TableCell>{transaction.discountedPrice}</TableCell>
-                {/*Details toggle button with modal pop-up */}              
+                
+                    {/* Details Button: Opens a dialog with transaction details */}          
                     <TableCell className="flex space-x-2">              
                       <Dialog>
                         <DialogTrigger asChild>
@@ -242,13 +262,14 @@ export default function DiscountsPage() {
                               </TableRow>
                             </TableBody>
                           </Table>
+                          // Display a message if product details are not found
                           ) : (
                             <p className="text-gray-500">Product details not found.</p>
                           )}
                         </DialogContent>
                       </Dialog>
                       
-                      {/* For deleting transactions */}
+                      {/* Delete Button: Opens a dialog to confirm transaction deletion */}
                       <Dialog>
                         <DialogTrigger asChild>
                       <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">
@@ -288,6 +309,8 @@ export default function DiscountsPage() {
                   );
                 })}
               </TableBody>
+              
+              {/* Footer: Displays the total discounted sales */}
               <TableFooter>
                 <TableRow className="bg-white">  
                   <TableCell colSpan={6} className="text-right font-bold">Total Discounted Sales:</TableCell>

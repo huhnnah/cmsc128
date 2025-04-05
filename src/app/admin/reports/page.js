@@ -52,6 +52,7 @@ const transactions = [
 ];
 
 export default function ReportsPage() {
+  {/* Calculate total sales, COGS, and net profit */}
   const totalSales = transactions.reduce((total, transaction) => {
     const amount = parseFloat(transaction.sales.replace("₱", "").replace(",", "")) || 0;
     return total + amount;
@@ -69,7 +70,8 @@ export default function ReportsPage() {
 
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
-  
+
+  {/* Handle date selection and validation */}
   const handleFromDateChange = (date) => {
     setFromDate(date);
     if (toDate && date > toDate) {
@@ -90,6 +92,7 @@ export default function ReportsPage() {
         <AppSidebar />
         <div className="flex-1 p-4 flex flex-col w-full">
           <div className="flex items-center justify-between mb-4 bg-white p-2 rounded-lg">
+            {/*Search bar: search by transaction, id, product*/}
             <div className="flex items-center space-x-2">
               <div className="relative w-80">
                 <input
@@ -101,6 +104,9 @@ export default function ReportsPage() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
+
+              {/*Date filter: from and to date*/}
+              {/* From date filter */}
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className={cn("w-[180px] flex items-center justify-between px-3 py-2 border rounded-md font-normal", !fromDate && "text-muted-foreground")}> 
@@ -109,9 +115,12 @@ export default function ReportsPage() {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[250px] p-0">
+                  {/* Calendar component for selecting date */}
                   <Calendar mode="single" selected={fromDate} onSelect={handleFromDateChange} initialFocus />
                 </PopoverContent>
               </Popover>
+
+              {/* To date filter */}
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" disabled={!fromDate} className={cn("w-[180px] flex items-center justify-between px-3 py-2 border rounded-md font-normal", !toDate && "text-muted-foreground")}> 
@@ -124,12 +133,16 @@ export default function ReportsPage() {
                 </PopoverContent>
               </Popover>
             </div>
+
+            {/*Download button*/}
             <div className="flex space-x-2">
             <Button className="bg-blue-400 text-white">
                 <Download className="w-4 h-4"/>
               </Button>
             </div>
           </div>
+
+          {/*Reports table*/}
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
           <h1 className="text-gray-600 font-bold">Reports</h1>
             <Table>
@@ -147,7 +160,9 @@ export default function ReportsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-              {transactions.map((transaction) => {
+
+                {/* Map through transactions and display them in the table */}
+                {transactions.map((transaction) => {
                   const product = products.find((p) => p.productCode === transaction.productCode) || {};
                   const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
                   return (
@@ -161,7 +176,7 @@ export default function ReportsPage() {
                     <TableCell>{transaction.cogs}</TableCell>
                     <TableCell>{transaction.net}</TableCell>
 
-                {/*Details toggle button with modal pop-up */}              
+                    {/* Details button: opens a dialog with product details */}             
                     <TableCell className="flex space-x-2">              
                       <Dialog>
                         <DialogTrigger asChild>
@@ -211,6 +226,8 @@ export default function ReportsPage() {
                   );
                 })}
               </TableBody>
+              
+              {/* Table footer: displays total sales, COGS, and net profit */}
               <TableFooter>
                 <TableRow className="bg-white">  
                   <TableCell colSpan={5} className="text-right font-bold">Total:</TableCell>

@@ -53,16 +53,18 @@ export default function DeletedPage() {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [selectedSubFilter, setSelectedSubFilter] = useState(null);
 
+  // Function to handle filter selection
   const handleFilterSelect = (filter, subFilter = null) => {
     setSelectedFilter(filter);
     setSelectedSubFilter(subFilter);
   };
 
+  // Sorting logic based on selected filter and sub-filter
   const getFilteredTransactions = () => {
     let sortedTransactions = [...transactions];
   
     if (!selectedFilter || !selectedSubFilter) return sortedTransactions;
-  
+
     if (selectedFilter === "Receipt Number") {
       sortedTransactions.sort((a, b) =>
         selectedSubFilter === "Ascending"
@@ -97,6 +99,8 @@ export default function DeletedPage() {
         <div className="flex-1 p-4 flex flex-col w-full">
           <div className="flex items-center justify-between mb-4 bg-white p-2 rounded-lg">
             <div className="flex items-center space-x-2">
+
+              {/* Search Bar: Allows users to search for transactions by ID, product, etc. */}
               <div className="relative w-80">
                 <input
                   type="text"
@@ -107,6 +111,10 @@ export default function DeletedPage() {
                   <Search className="w-5 h-5" />
                 </div>
               </div>
+              {/* 
+                  FILTER DROPDOWN: Allows users to filter deliveries by Delivery Number (ascending/descending), 
+                  Supplier (e.g., Cort, Lazer), or Total Cost (low to high, high to low)
+                */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex items-center space-x-2">
@@ -115,6 +123,8 @@ export default function DeletedPage() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
+
+                   {/* Filter by Receipt Number */}
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Receipt Number</DropdownMenuSubTrigger>
                     <DropdownMenuSubContent>
@@ -127,6 +137,7 @@ export default function DeletedPage() {
                     </DropdownMenuSubContent>
                   </DropdownMenuSub>
 
+                  {/* Filter by Product Name */}
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Product Name</DropdownMenuSubTrigger>
                     <DropdownMenuSubContent>
@@ -139,6 +150,7 @@ export default function DeletedPage() {
                     </DropdownMenuSubContent>
                   </DropdownMenuSub>
 
+                   {/* Filter by Price */}
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Price</DropdownMenuSubTrigger>
                     <DropdownMenuSubContent>
@@ -151,6 +163,7 @@ export default function DeletedPage() {
                     </DropdownMenuSubContent>
                   </DropdownMenuSub>
 
+                  {/* Reset Filters */}
                   <DropdownMenuItem 
                     onClick={() => handleFilterSelect(null, null)} 
                     className="text-red-500 font-medium"
@@ -160,6 +173,7 @@ export default function DeletedPage() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+            {/* Download Button */}
             <div className="flex space-x-2">
               <Button className="bg-blue-400 text-white">
                 <Download className="w-4 h-4" />
@@ -167,6 +181,7 @@ export default function DeletedPage() {
             </div>
           </div>
 
+          {/* Deleted Transactions Table */}
           <div className="p-4 bg-white shadow-md rounded-lg flex flex-col overflow-auto w-full">
             <h1 className="text-gray-600 font-bold">Deleted Transactions</h1>
             <Table>
@@ -183,6 +198,7 @@ export default function DeletedPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
+                {/* Map through transactions and display each transaction in a table row */}
                 {getFilteredTransactions().map((transaction) => {
                   const product = products.find((p) => p.productCode === transaction.productCode) || {};
                   const deliveries = delivery.find((d) => d.deliveryNum === transaction.productCode) || {};
@@ -194,6 +210,8 @@ export default function DeletedPage() {
                       <TableCell>{transaction.receiptNum}</TableCell>
                       <TableCell>{transaction.product}</TableCell>
                       <TableCell>{transaction.totalPrice}</TableCell>
+
+                      {/* Details Button: Opens a dialog with transaction details */}
                       <TableCell>
                         <Dialog>
                           <DialogTrigger asChild>
@@ -236,6 +254,8 @@ export default function DeletedPage() {
                         </Dialog>
                       </TableCell>
                       <TableCell className="flex items-center">
+
+                        {/* Retrieve Button: Opens a dialog to confirm transaction retrieval */}
                         <Dialog>
                           <DialogTrigger asChild>
                             <span className="cursor-pointer text-gray-500 hover:text-blue-600">
@@ -262,6 +282,8 @@ export default function DeletedPage() {
                             </div>
                           </DialogContent>
                         </Dialog>
+
+                        {/* Delete Button: Opens a dialog to confirm transaction deletion */}
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600">

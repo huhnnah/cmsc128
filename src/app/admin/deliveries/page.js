@@ -147,6 +147,7 @@ export default function DeliveriesPage() {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
 
+                    {/* Reset Filters */}
                     <DropdownMenuItem 
                       onClick={() => handleFilterSelect(null, null)} 
                       className="text-red-500 font-medium"
